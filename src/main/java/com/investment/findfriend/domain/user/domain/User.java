@@ -23,9 +23,6 @@ public class User {
     private String email;
 
     @Column
-    private String password;
-
-    @Column
     private LocalDate birthdate;
 
     @Column
@@ -37,6 +34,4 @@ public class User {
     @Column
     private String phone;
 
-    @Column
-    private String profile;
 }
