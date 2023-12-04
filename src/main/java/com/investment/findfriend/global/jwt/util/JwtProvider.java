@@ -16,11 +16,11 @@ public class JwtProvider {
     private final JwtProperties jwtProperties;
 
     public String createAccessToken(String email, Authority authority) {
-        return createToken(email, authority, jwtProperties.getAccessExpiration());
+        return createToken(email, authority, jwtProperties.getAccessExp());
     }
 
     public String createRefreshToken(String email, Authority authority) {
-        return createToken(email, authority, jwtProperties.getRefreshExpiration());
+        return createToken(email, authority, jwtProperties.getRefreshExp());
     }
 
     private String createToken(String email, Authority authority, long expirationTime) {
