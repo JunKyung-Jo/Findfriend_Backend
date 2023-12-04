@@ -1,12 +1,11 @@
-package com.investment.findfriend.global.auth.dto.request;
+package com.investment.findfriend.global.feign.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
-@ConfigurationProperties("spring.security.oauth2.client.registration.google")
+@ConfigurationProperties("oauth.google")
 public class GoogleTokenRequest {
     private final String code;
     private String client_id;

@@ -7,16 +7,16 @@ import com.investment.findfriend.domain.user.domain.Authority;
 import com.investment.findfriend.domain.user.domain.Gender;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
-import com.investment.findfriend.global.auth.dto.request.GoogleTokenRequest;
-import com.investment.findfriend.global.auth.dto.request.NaverTokenRequest;
-import com.investment.findfriend.global.auth.dto.response.google.GoogleTokenResponse;
-import com.investment.findfriend.global.auth.dto.response.google.GoogleUserInfoResponse;
-import com.investment.findfriend.global.auth.dto.response.naver.NaverTokenResponse;
-import com.investment.findfriend.global.auth.dto.response.naver.NaverUserInfoResponse;
-import com.investment.findfriend.global.auth.google.GoogleGetTokenService;
-import com.investment.findfriend.global.auth.google.GoogleGetUserInfoService;
-import com.investment.findfriend.global.auth.naver.NaverGetTokenService;
-import com.investment.findfriend.global.auth.naver.NaverGetUserInfoService;
+import com.investment.findfriend.global.feign.dto.request.GoogleTokenRequest;
+import com.investment.findfriend.global.feign.dto.request.NaverTokenRequest;
+import com.investment.findfriend.global.feign.dto.response.google.GoogleTokenResponse;
+import com.investment.findfriend.global.feign.dto.response.google.GoogleUserInfoResponse;
+import com.investment.findfriend.global.feign.dto.response.naver.NaverTokenResponse;
+import com.investment.findfriend.global.feign.dto.response.naver.NaverUserInfoResponse;
+import com.investment.findfriend.global.feign.google.GoogleGetTokenClient;
+import com.investment.findfriend.global.feign.google.GoogleGetUserInfoClient;
+import com.investment.findfriend.global.feign.naver.NaverGetTokenClient;
+import com.investment.findfriend.global.feign.naver.NaverGetUserInfoClient;
 import com.investment.findfriend.global.jwt.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,21 +29,21 @@ import java.time.LocalDate;
 public class UserSignUpService {
 
     private final UserRepository userRepository;
-    private final GoogleGetTokenService googleGetTokenService;
-    private final GoogleGetUserInfoService googleGetUserInfoService;
-    private final NaverGetTokenService naverGetTokenService;
-    private final NaverGetUserInfoService naverGetUserInfoService;
+    private final GoogleGetTokenClient googleGetTokenClient;
+    private final GoogleGetUserInfoClient googleGetUserInfoClient;
+    private final NaverGetTokenClient naverGetTokenClient;
+    private final NaverGetUserInfoClient naverGetUserInfoClient;
     private final JwtProvider jwtProvider;
 
     public ResponseEntity<TokenResponse> execute(String code, Auth auth) {
         String email = null;
         if (auth == Auth.GOOGLE) {
-            GoogleTokenResponse googleTokenResponse = googleGetTokenService.execute(
+            GoogleTokenResponse googleTokenResponse = googleGetTokenClient.execute(
                     GoogleTokenRequest.builder()
                             .code(code)
                             .build()
             );
-            GoogleUserInfoResponse googleUserInfoResponse = googleGetUserInfoService.execute(
+            GoogleUserInfoResponse googleUserInfoResponse = googleGetUserInfoClient.execute(
                     googleTokenResponse.getAccess_token()
             );
 
@@ -59,12 +59,12 @@ public class UserSignUpService {
 
             email = googleUserInfoResponse.getEmail();
         } else if (auth == Auth.NAVER) {
-            NaverTokenResponse naverTokenResponse = naverGetTokenService.execute(
+            NaverTokenResponse naverTokenResponse = naverGetTokenClient.execute(
                     NaverTokenRequest.builder()
                             .code(code)
                             .build()
             );
-            NaverUserInfoResponse naverUserInfoResponse = naverGetUserInfoService.execute(
+            NaverUserInfoResponse naverUserInfoResponse = naverGetUserInfoClient.execute(
                     naverTokenResponse.getToken_type() + " " + naverTokenResponse.getAccess_token()
             ).getResponse();
 

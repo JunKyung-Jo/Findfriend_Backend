@@ -1,17 +1,17 @@
-package com.investment.findfriend.global.auth.google;
+package com.investment.findfriend.global.feign.google;
 
-import com.investment.findfriend.global.auth.dto.request.GoogleTokenRequest;
-import com.investment.findfriend.global.auth.dto.response.google.GoogleTokenResponse;
+import com.investment.findfriend.global.feign.dto.request.GoogleTokenRequest;
+import com.investment.findfriend.global.feign.dto.response.google.GoogleTokenResponse;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        name = "GoogleGetTokenService",
+        name = "GoogleGetTokenClient",
         url = "https://oauth2.googleapis.com/token"
 )
-public interface GoogleGetTokenService {
+public interface GoogleGetTokenClient {
     @PostMapping
     @Headers("Content-Type: application/x-www-form-urlencoded")
     GoogleTokenResponse execute(@RequestBody GoogleTokenRequest request);

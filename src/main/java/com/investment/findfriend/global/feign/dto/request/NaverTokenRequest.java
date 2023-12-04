@@ -1,11 +1,11 @@
-package com.investment.findfriend.global.auth.dto.request;
+package com.investment.findfriend.global.feign.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
-@ConfigurationProperties(prefix = "spring.security.oauth2.client.registration.naver")
+@ConfigurationProperties(prefix = "oauth.naver")
 public class NaverTokenRequest {
     private final String response_type = "authorization_code";
     private String client_id;

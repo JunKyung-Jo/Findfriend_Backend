@@ -1,4 +1,4 @@
-package com.investment.findfriend.global.auth.dto.response.naver;
+package com.investment.findfriend.global.feign.dto.response;
 
 import lombok.Getter;
 

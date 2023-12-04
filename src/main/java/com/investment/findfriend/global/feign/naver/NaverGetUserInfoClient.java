@@ -1,15 +1,15 @@
-package com.investment.findfriend.global.auth.naver;
+package com.investment.findfriend.global.feign.naver;
 
-import com.investment.findfriend.global.auth.dto.response.naver.NaverResponse;
+import com.investment.findfriend.global.feign.dto.response.naver.NaverResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
-        name = "NaverGetUserInfoService",
+        name = "NaverGetUserInfoClient",
         url = "https://openapi.naver.com/v1/nid/me"
 )
-public interface NaverGetUserInfoService {
+public interface NaverGetUserInfoClient {
     @GetMapping
     NaverResponse execute(@RequestParam String Authorization);
 }

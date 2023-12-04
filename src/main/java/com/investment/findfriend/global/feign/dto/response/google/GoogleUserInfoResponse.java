@@ -1,4 +1,4 @@
-package com.investment.findfriend.global.auth.dto.response.google;
+package com.investment.findfriend.global.feign.dto.response.google;
 
 import lombok.Getter;
 
