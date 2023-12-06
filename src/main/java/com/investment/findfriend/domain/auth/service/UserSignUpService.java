@@ -3,8 +3,8 @@ package com.investment.findfriend.domain.auth.service;
 import com.investment.findfriend.domain.auth.domain.Auth;
 import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
 import com.investment.findfriend.domain.auth.presentation.dto.response.TokenResponse;
-import com.investment.findfriend.domain.user.domain.Authority;
-import com.investment.findfriend.domain.user.domain.Gender;
+import com.investment.findfriend.domain.user.domain.type.Authority;
+import com.investment.findfriend.domain.user.domain.type.Gender;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.feign.dto.request.GoogleTokenRequest;
@@ -53,6 +53,7 @@ public class UserSignUpService {
                                 .name(googleUserInfoResponse.getName())
                                 .authority(Authority.ROLE_USER)
                                 .email(googleUserInfoResponse.getEmail())
+                                .statusMessage("상태 메시지")
                                 .build()
                 );
             }
@@ -77,6 +78,7 @@ public class UserSignUpService {
                                 .authority(Authority.ROLE_USER)
                                 .birthdate(LocalDate.parse(naverUserInfoResponse.getBirthyear() + "-" + naverUserInfoResponse.getBirthday()))
                                 .phone(naverUserInfoResponse.getMobile())
+                                .statusMessage("상태 메시지")
                                 .build()
                 );
             }
