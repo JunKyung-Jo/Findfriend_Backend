@@ -26,6 +26,7 @@ oauth:
   naver:
     client_id: ${NAVER_CLIENT_ID}
     client_secret: ${NAVER_CLIENT_SECRET}
+    redirect_uri: ${NAVER_REDIRECT_URI}
 
 jwt:
   secret: ${JWT_SECRET}

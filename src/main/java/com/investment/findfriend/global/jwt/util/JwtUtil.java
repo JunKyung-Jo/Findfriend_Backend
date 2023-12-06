@@ -28,12 +28,25 @@ public class JwtUtil {
     }
 
     public Authentication getAuthentication(String token) {
-        AuthDetails authDetails = (AuthDetails) authDetailsService.loadUserByUsername(extractEmail(token));
+        AuthDetails authDetails = (AuthDetails) authDetailsService.loadUserByUsername(extractEmailByToken(token));
         return new UsernamePasswordAuthenticationToken(authDetails, token, authDetails.getAuthorities());
     }
 
-    public String extractEmail(String token) {
-        return getClaims(token).getSubject();
+    private String extractEmailByToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(jwtProperties.getSecret())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+    public String extractEmail(HttpServletRequest request) {
+        return Jwts.parserBuilder()
+                .setSigningKey(jwtProperties.getSecret())
+                .build()
+                .parseClaimsJws(request.getHeader("Authorization").split(" ")[1].trim())
+                .getBody()
+                .getSubject();
     }
 
     public Claims getClaims(String token) {
