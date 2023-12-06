@@ -1,6 +1,6 @@
 package com.investment.findfriend.global.jwt.util;
 
-import com.investment.findfriend.domain.user.domain.Authority;
+import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.global.jwt.properties.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
