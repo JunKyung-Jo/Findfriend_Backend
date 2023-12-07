@@ -17,6 +17,7 @@ import com.investment.findfriend.global.feign.google.GoogleGetTokenClient;
 import com.investment.findfriend.global.feign.google.GoogleGetUserInfoClient;
 import com.investment.findfriend.global.feign.naver.NaverGetTokenClient;
 import com.investment.findfriend.global.feign.naver.NaverGetUserInfoClient;
+import com.investment.findfriend.global.feign.properties.AuthProperties;
 import com.investment.findfriend.global.jwt.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ public class UserSignUpService {
     private final NaverGetTokenClient naverGetTokenClient;
     private final NaverGetUserInfoClient naverGetUserInfoClient;
     private final JwtProvider jwtProvider;
+    private final AuthProperties authProperties;
 
     public ResponseEntity<TokenResponse> execute(String code, Auth auth) {
         String email = null;
@@ -41,6 +43,9 @@ public class UserSignUpService {
             GoogleTokenResponse googleTokenResponse = googleGetTokenClient.execute(
                     GoogleTokenRequest.builder()
                             .code(code)
+                            .client_id(authProperties.getClient_id())
+                            .client_secret(authProperties.getClient_secret())
+                            .redirect_uri(authProperties.getRedirect_uri())
                             .build()
             );
             GoogleUserInfoResponse googleUserInfoResponse = googleGetUserInfoClient.execute(
