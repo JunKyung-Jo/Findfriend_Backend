@@ -1,5 +1,6 @@
 package com.investment.findfriend.domain.chat.domain;
 
+import com.investment.findfriend.domain.friend.domain.Friend;
 import com.investment.findfriend.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +21,10 @@ public class Chat {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "friend_id")
+    private Friend friend;
 
     @Column
     private String userMessage;

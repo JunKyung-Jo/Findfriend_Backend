@@ -1,9 +1,12 @@
 package com.investment.findfriend.domain.friend.domain;
 
+import com.investment.findfriend.domain.chat.domain.Chat;
 import com.investment.findfriend.domain.friend.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +30,10 @@ public class Friend {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "friend")
+    @JoinColumn(name = "chat_id")
+    private List<Chat> chat;
 
     public void setAuthority(Authority authority) {
         this.authority = authority;
