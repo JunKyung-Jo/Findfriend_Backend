@@ -1,5 +1,6 @@
 package com.investment.findfriend.domain.user.domain;
 
+import com.investment.findfriend.domain.friend.domain.Friend;
 import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.type.Gender;
 import com.investment.findfriend.domain.user.presentation.dto.request.UpdateUserInfoRequest;
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +41,9 @@ public class User {
 
     @Column
     private String statusMessage;
+
+    @OneToMany
+    private List<Friend> friends;
 
     public void update(UpdateUserInfoRequest request) {
         this.name = request.getName();
