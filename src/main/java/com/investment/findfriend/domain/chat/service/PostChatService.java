@@ -3,7 +3,7 @@ package com.investment.findfriend.domain.chat.service;
 import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
 import com.investment.findfriend.domain.chat.domain.Chat;
 import com.investment.findfriend.domain.chat.presentation.dto.request.ChatRequest;
-import com.investment.findfriend.domain.chat.presentation.dto.response.ChatResponse;
+import com.investment.findfriend.domain.chat.presentation.dto.response.GenerateChatResponse;
 import com.investment.findfriend.domain.chat.repository.ChatRepository;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
@@ -28,7 +28,7 @@ public class PostChatService {
     private final ChatGPTClient chatGPTClient;
     private final ChatGPTProperties chatGPTProperties;
 
-    public ResponseEntity<ChatResponse> execute(ChatRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<GenerateChatResponse> execute(ChatRequest request, HttpServletRequest httpServletRequest) {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
@@ -49,7 +49,7 @@ public class PostChatService {
                         .build()
         );
 
-        return ResponseEntity.ok(ChatResponse.builder()
+        return ResponseEntity.ok(GenerateChatResponse.builder()
                 .response(response.getChoices().get(0).getText())
                 .build());
     }
