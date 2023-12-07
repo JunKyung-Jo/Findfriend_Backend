@@ -32,8 +32,7 @@ public class Friend {
     private User user;
 
     @OneToMany(mappedBy = "friend")
-    @JoinColumn(name = "chat_id")
-    private List<Chat> chat;
+    private List<Chat> chats;
 
     public void setAuthority(Authority authority) {
         this.authority = authority;

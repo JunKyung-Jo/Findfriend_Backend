@@ -47,7 +47,6 @@ public class User {
     private List<Friend> friends;
 
     @OneToMany(mappedBy = "user")
-    @JoinColumn(name = "chat_id")
     private List<Chat> chats;
 
     public void update(UpdateUserInfoRequest request) {
