@@ -6,6 +6,7 @@ import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
         name = "ChatGPTClient",
@@ -15,7 +16,6 @@ public interface ChatGPTClient {
     @PostMapping
     @Headers({
             "Content-Type: application/json",
-            "Authorization: Bearer {apiKey}",
     })
-    ChatGPTResponse getChatGPTResponse(@RequestBody ChatGPTRequest chatGPTRequest, String apiKey);
+    ChatGPTResponse getChatGPTResponse(@RequestBody ChatGPTRequest chatGPTRequest, @RequestHeader("Authorization") String apiKey);
 }
