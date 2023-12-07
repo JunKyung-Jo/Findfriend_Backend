@@ -1,5 +1,6 @@
 package com.investment.findfriend.domain.friend.domain;
 
+import com.investment.findfriend.domain.friend.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,8 +21,14 @@ public class Friend {
     @Column
     private String statusMessage;
 
+    @Column
+    private Authority authority;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
+    }
 }
