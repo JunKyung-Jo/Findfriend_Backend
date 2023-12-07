@@ -1,6 +1,6 @@
 package com.investment.findfriend.global.feign.google;
 
-import com.investment.findfriend.global.feign.dto.request.GoogleTokenRequest;
+import com.investment.findfriend.global.feign.dto.request.google.GoogleTokenRequest;
 import com.investment.findfriend.global.feign.dto.response.google.GoogleTokenResponse;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
