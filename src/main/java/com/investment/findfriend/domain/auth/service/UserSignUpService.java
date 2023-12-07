@@ -17,6 +17,8 @@ import com.investment.findfriend.global.feign.google.GoogleGetTokenClient;
 import com.investment.findfriend.global.feign.google.GoogleGetUserInfoClient;
 import com.investment.findfriend.global.feign.naver.NaverGetTokenClient;
 import com.investment.findfriend.global.feign.naver.NaverGetUserInfoClient;
+import com.investment.findfriend.global.feign.properties.GoogleAuthProperties;
+import com.investment.findfriend.global.feign.properties.NaverAuthProperties;
 import com.investment.findfriend.global.jwt.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,8 @@ public class UserSignUpService {
     private final NaverGetTokenClient naverGetTokenClient;
     private final NaverGetUserInfoClient naverGetUserInfoClient;
     private final JwtProvider jwtProvider;
+    private final GoogleAuthProperties googleAuthProperties;
+    private final NaverAuthProperties naverAuthProperties;
 
     public ResponseEntity<TokenResponse> execute(String code, Auth auth) {
         String email = null;
@@ -41,6 +45,9 @@ public class UserSignUpService {
             GoogleTokenResponse googleTokenResponse = googleGetTokenClient.execute(
                     GoogleTokenRequest.builder()
                             .code(code)
+                            .client_id(googleAuthProperties.getClient_id())
+                            .client_secret(googleAuthProperties.getClient_secret())
+                            .redirect_uri(googleAuthProperties.getRedirect_uri())
                             .build()
             );
             GoogleUserInfoResponse googleUserInfoResponse = googleGetUserInfoClient.execute(
@@ -63,6 +70,8 @@ public class UserSignUpService {
             NaverTokenResponse naverTokenResponse = naverGetTokenClient.execute(
                     NaverTokenRequest.builder()
                             .code(code)
+                            .client_id(naverAuthProperties.getClient_id())
+                            .client_secret(naverAuthProperties.getClient_secret())
                             .build()
             );
             NaverUserInfoResponse naverUserInfoResponse = naverGetUserInfoClient.execute(
