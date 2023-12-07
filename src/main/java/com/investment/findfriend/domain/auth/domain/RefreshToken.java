@@ -17,4 +17,9 @@ public class RefreshToken {
 
     @Column
     private String refreshToken;
+
+    public void setToken(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
 }

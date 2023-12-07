@@ -1,8 +1,10 @@
 package com.investment.findfriend.domain.auth.service;
 
 import com.investment.findfriend.domain.auth.domain.Auth;
+import com.investment.findfriend.domain.auth.domain.RefreshToken;
 import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
 import com.investment.findfriend.domain.auth.presentation.dto.response.TokenResponse;
+import com.investment.findfriend.domain.auth.repository.RefreshTokenRepository;
 import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.type.Gender;
 import com.investment.findfriend.domain.user.domain.User;
@@ -25,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,7 @@ public class UserSignUpService {
     private final JwtProvider jwtProvider;
     private final GoogleAuthProperties googleAuthProperties;
     private final NaverAuthProperties naverAuthProperties;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public ResponseEntity<TokenResponse> execute(String code, Auth auth) {
         String email = null;
@@ -94,9 +98,25 @@ public class UserSignUpService {
             email = naverUserInfoResponse.getEmail();
         }
         User user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        String accessToken = jwtProvider.createAccessToken(user.getEmail(), user.getAuthority());
+        String refreshToken = jwtProvider.createRefreshToken(user.getEmail(), user.getAuthority());
+        Optional<RefreshToken> refresh_token = refreshTokenRepository.findByEmail(email);
+        if (refreshTokenRepository.findByEmail(email).isEmpty()) {
+            refreshTokenRepository.save(
+                    RefreshToken.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .email(email)
+                            .build()
+            );
+        }
+        else {
+            refresh_token.get().setToken(accessToken, refreshToken);
+            refreshTokenRepository.save(refresh_token.get());
+        }
         return ResponseEntity.ok(TokenResponse.builder()
-                .accessToken(jwtProvider.createAccessToken(user.getEmail(), user.getAuthority()))
-                .refreshToken(jwtProvider.createRefreshToken(user.getEmail(), user.getAuthority()))
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build()
         );
     }
