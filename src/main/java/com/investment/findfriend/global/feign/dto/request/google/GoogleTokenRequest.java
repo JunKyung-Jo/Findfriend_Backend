@@ -1,4 +1,4 @@
-package com.investment.findfriend.global.feign.dto.request;
+package com.investment.findfriend.global.feign.dto.request.google;
 
 import lombok.*;
 

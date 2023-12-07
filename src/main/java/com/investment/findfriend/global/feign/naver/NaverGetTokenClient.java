@@ -1,6 +1,6 @@
 package com.investment.findfriend.global.feign.naver;
 
-import com.investment.findfriend.global.feign.dto.request.NaverTokenRequest;
+import com.investment.findfriend.global.feign.dto.request.naver.NaverTokenRequest;
 import com.investment.findfriend.global.feign.dto.response.naver.NaverTokenResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

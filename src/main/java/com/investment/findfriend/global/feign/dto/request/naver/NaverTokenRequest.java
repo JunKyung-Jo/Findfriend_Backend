@@ -1,8 +1,7 @@
-package com.investment.findfriend.global.feign.dto.request;
+package com.investment.findfriend.global.feign.dto.request.naver;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @Builder
