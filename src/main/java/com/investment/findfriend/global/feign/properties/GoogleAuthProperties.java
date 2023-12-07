@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @ConfigurationProperties(prefix = "oauth.google")
 @AllArgsConstructor
-public class AuthProperties {
+public class GoogleAuthProperties {
     private String client_id;
     private String client_secret;
     private String redirect_uri;
