@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class RefreshToken {
     @Id
+    @Column(unique = true, length = 50)
     private String email;
 
     @Column
@@ -17,9 +18,4 @@ public class RefreshToken {
 
     @Column
     private String refreshToken;
-
-    public void setToken(String accessToken, String refreshToken) {
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-    }
 }
