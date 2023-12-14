@@ -24,11 +24,12 @@ public class JwtProvider {
     }
 
     private String createToken(String email, Authority authority, long expirationTime) {
+        Date now = new Date();
         return Jwts.builder()
                 .setSubject(email)
                 .claim("AUTHORIZATION_KEY", authority)
                 .signWith(jwtProperties.getSecret(), SignatureAlgorithm.HS256)
-                .setExpiration(new Date(expirationTime))
+                .setExpiration(new Date(now.getTime() + expirationTime))
                 .compact();
 
     }
