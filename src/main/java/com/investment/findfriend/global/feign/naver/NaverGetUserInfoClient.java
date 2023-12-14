@@ -3,7 +3,7 @@ package com.investment.findfriend.global.feign.naver;
 import com.investment.findfriend.global.feign.dto.response.naver.NaverResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
         name = "NaverGetUserInfoClient",
@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface NaverGetUserInfoClient {
     @GetMapping
-    NaverResponse execute(@RequestParam String Authorization);
+    NaverResponse execute(@RequestHeader String Authorization);
 }

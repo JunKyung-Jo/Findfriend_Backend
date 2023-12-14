@@ -1,33 +1,26 @@
 package com.investment.findfriend.domain.auth.service;
 
 import com.investment.findfriend.domain.auth.domain.Auth;
-import com.investment.findfriend.domain.auth.domain.RefreshToken;
-import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
 import com.investment.findfriend.domain.auth.presentation.dto.response.TokenResponse;
-import com.investment.findfriend.domain.auth.repository.RefreshTokenRepository;
 import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.type.Gender;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.feign.dto.request.google.GoogleTokenRequest;
-import com.investment.findfriend.global.feign.dto.request.naver.NaverTokenRequest;
 import com.investment.findfriend.global.feign.dto.response.google.GoogleTokenResponse;
 import com.investment.findfriend.global.feign.dto.response.google.GoogleUserInfoResponse;
-import com.investment.findfriend.global.feign.dto.response.naver.NaverTokenResponse;
-import com.investment.findfriend.global.feign.dto.response.naver.NaverUserInfoResponse;
+import com.investment.findfriend.global.feign.dto.response.naver.*;
 import com.investment.findfriend.global.feign.google.GoogleGetTokenClient;
 import com.investment.findfriend.global.feign.google.GoogleGetUserInfoClient;
 import com.investment.findfriend.global.feign.naver.NaverGetTokenClient;
 import com.investment.findfriend.global.feign.naver.NaverGetUserInfoClient;
 import com.investment.findfriend.global.feign.properties.GoogleAuthProperties;
 import com.investment.findfriend.global.feign.properties.NaverAuthProperties;
-import com.investment.findfriend.global.jwt.util.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,13 +31,10 @@ public class UserSignUpService {
     private final GoogleGetUserInfoClient googleGetUserInfoClient;
     private final NaverGetTokenClient naverGetTokenClient;
     private final NaverGetUserInfoClient naverGetUserInfoClient;
-    private final JwtProvider jwtProvider;
     private final GoogleAuthProperties googleAuthProperties;
     private final NaverAuthProperties naverAuthProperties;
-    private final RefreshTokenRepository refreshTokenRepository;
-
+    private final SaveRefreshTokenService saveRefreshTokenService;
     public ResponseEntity<TokenResponse> execute(String code, Auth auth) {
-        String email = null;
         if (auth == Auth.GOOGLE) {
             GoogleTokenResponse googleTokenResponse = googleGetTokenClient.execute(
                     GoogleTokenRequest.builder()
@@ -58,66 +48,45 @@ public class UserSignUpService {
                     googleTokenResponse.getAccess_token()
             );
 
+            User user = User.builder()
+                    .name(googleUserInfoResponse.getName())
+                    .authority(Authority.ROLE_USER)
+                    .email(googleUserInfoResponse.getEmail())
+                    .statusMessage("상태 메시지")
+                    .build();
+
             if (userRepository.findByEmail(googleUserInfoResponse.getEmail()).isEmpty()) {
-                userRepository.save(
-                        User.builder()
-                                .name(googleUserInfoResponse.getName())
-                                .authority(Authority.ROLE_USER)
-                                .email(googleUserInfoResponse.getEmail())
-                                .statusMessage("상태 메시지")
-                                .build()
-                );
+                userRepository.save(user);
             }
 
-            email = googleUserInfoResponse.getEmail();
+            return saveRefreshTokenService.execute(googleUserInfoResponse.getEmail(), user.getAuthority());
         } else if (auth == Auth.NAVER) {
             NaverTokenResponse naverTokenResponse = naverGetTokenClient.execute(
-                    NaverTokenRequest.builder()
-                            .code(code)
-                            .client_id(naverAuthProperties.getClient_id())
-                            .client_secret(naverAuthProperties.getClient_secret())
-                            .build()
+                    code,
+                    naverAuthProperties.getClient_id(),
+                    naverAuthProperties.getClient_secret(),
+                    "authorization_code",
+                    "test"
             );
             NaverUserInfoResponse naverUserInfoResponse = naverGetUserInfoClient.execute(
                     naverTokenResponse.getToken_type() + " " + naverTokenResponse.getAccess_token()
             ).getResponse();
 
+            User user = User.builder()
+                    .name(naverUserInfoResponse.getName())
+                    .email(naverUserInfoResponse.getEmail())
+                    .gender(naverUserInfoResponse.getGender().equals("M") ? Gender.MALE : Gender.FEMALE)
+                    .authority(Authority.ROLE_USER)
+                    .birthdate(LocalDate.parse(naverUserInfoResponse.getBirthyear() + "-" + naverUserInfoResponse.getBirthday()))
+                    .phone(naverUserInfoResponse.getMobile())
+                    .statusMessage("상태 메시지")
+                    .build();
+
             if (userRepository.findByEmail(naverUserInfoResponse.getEmail()).isEmpty()) {
-                userRepository.save(
-                        User.builder()
-                                .name(naverUserInfoResponse.getName())
-                                .email(naverUserInfoResponse.getEmail())
-                                .gender(Gender.valueOf(naverUserInfoResponse.getGender()))
-                                .authority(Authority.ROLE_USER)
-                                .birthdate(LocalDate.parse(naverUserInfoResponse.getBirthyear() + "-" + naverUserInfoResponse.getBirthday()))
-                                .phone(naverUserInfoResponse.getMobile())
-                                .statusMessage("상태 메시지")
-                                .build()
-                );
+                userRepository.save(user);
             }
-            email = naverUserInfoResponse.getEmail();
+            return saveRefreshTokenService.execute(naverUserInfoResponse.getEmail(), user.getAuthority());
         }
-        User user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.EXCEPTION);
-        String accessToken = jwtProvider.createAccessToken(user.getEmail(), user.getAuthority());
-        String refreshToken = jwtProvider.createRefreshToken(user.getEmail(), user.getAuthority());
-        Optional<RefreshToken> refresh_token = refreshTokenRepository.findByEmail(email);
-        if (refreshTokenRepository.findByEmail(email).isEmpty()) {
-            refreshTokenRepository.save(
-                    RefreshToken.builder()
-                            .accessToken(accessToken)
-                            .refreshToken(refreshToken)
-                            .email(email)
-                            .build()
-            );
-        }
-        else {
-            refresh_token.get().setToken(accessToken, refreshToken);
-            refreshTokenRepository.save(refresh_token.get());
-        }
-        return ResponseEntity.ok(TokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build()
-        );
+        return null;
     }
 }
