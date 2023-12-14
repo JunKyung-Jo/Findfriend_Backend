@@ -10,6 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 public class RefreshToken {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(unique = true, length = 50)
     private String email;
 
