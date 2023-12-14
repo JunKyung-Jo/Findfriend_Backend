@@ -1,5 +1,7 @@
 package com.investment.findfriend.global.jwt.util;
 
+import com.investment.findfriend.global.jwt.exception.LoggedOutAccessTokenException;
+import com.investment.findfriend.global.jwt.exception.TokenNotFoundException;
 import com.investment.findfriend.global.jwt.properties.JwtProperties;
 import com.investment.findfriend.global.security.auth.AuthDetails;
 import com.investment.findfriend.global.security.auth.AuthDetailsService;
@@ -41,19 +43,14 @@ public class JwtUtil {
                 .getSubject();
     }
     public String extractEmail(HttpServletRequest request) {
+        if (request.getHeader("Authorization") == null) {
+            throw TokenNotFoundException.EXCEPTION;
+        }
         return Jwts.parserBuilder()
                 .setSigningKey(jwtProperties.getSecret())
                 .build()
                 .parseClaimsJws(request.getHeader("Authorization").split(" ")[1].trim())
                 .getBody()
                 .getSubject();
-    }
-
-    public Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(jwtProperties.getSecret())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
     }
 }
