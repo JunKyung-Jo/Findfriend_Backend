@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class SaveRefreshTokenService {
@@ -20,14 +22,18 @@ public class SaveRefreshTokenService {
         String accessToken = jwtProvider.createAccessToken(email, authority);
         String refreshToken = jwtProvider.createRefreshToken(email, authority);
 
-        refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .email(email)
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build()
-        );
+        Optional<RefreshToken> refresh_token = refreshTokenRepository.findByEmail(email);
 
+        if (refresh_token.isEmpty()) {
+            refreshTokenRepository.save(
+                    RefreshToken.builder()
+                            .email(email)
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .build()
+            );
+        }
+        refresh_token.get().setToken(accessToken, refreshToken);
         return ResponseEntity.ok(TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
