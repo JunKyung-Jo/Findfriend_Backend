@@ -7,6 +7,7 @@ import com.investment.findfriend.domain.chat.presentation.dto.response.GenerateC
 import com.investment.findfriend.domain.chat.repository.ChatRepository;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
+import com.investment.findfriend.global.feign.dto.request.gpt.ChatGPTMessage;
 import com.investment.findfriend.global.feign.dto.request.gpt.ChatGPTRequest;
 import com.investment.findfriend.global.feign.dto.response.gpt.ChatGPTResponse;
 import com.investment.findfriend.global.feign.gpt.ChatGPTClient;
@@ -18,6 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,22 +39,24 @@ public class PostChatService {
 
         ChatGPTResponse response = chatGPTClient.getChatGPTResponse(ChatGPTRequest.builder()
                 .model(chatGPTProperties.getModel())
-                .max_tokens(chatGPTProperties.getMax_tokens())
                 .temperature(chatGPTProperties.getTemperature())
-                .prompt(request.getText())
-                .build(), chatGPTProperties.getApiKey());
+                .messages(List.of(ChatGPTMessage.builder()
+                        .role("user")
+                        .content(request.getText())
+                        .build()))
+                .build(), "Bearer " + chatGPTProperties.getApiKey());
 
         chatRepository.save(
                 Chat.builder()
                         .user(user)
                         .userMessage(request.getText())
-                        .replyMessage(response.getChoices().get(0).getText())
+                        .replyMessage(response.getChoices().get(0).getMessage().getContent())
                         .timestamp(LocalDateTime.now())
                         .build()
         );
 
         return ResponseEntity.ok(GenerateChatResponse.builder()
-                .response(response.getChoices().get(0).getText())
+                .response(response.getChoices().get(0).getMessage().getContent())
                 .build());
     }
 }
