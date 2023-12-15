@@ -35,6 +35,7 @@ public class SaveRefreshTokenService {
         }
         else {
             refresh_token.get().setToken(accessToken, refreshToken);
+            refreshTokenRepository.save(refresh_token.get());
         }
         return ResponseEntity.ok(TokenResponse.builder()
                 .accessToken(accessToken)
