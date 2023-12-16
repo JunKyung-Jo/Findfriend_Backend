@@ -5,6 +5,8 @@ import com.investment.findfriend.domain.chat.domain.Chat;
 import com.investment.findfriend.domain.chat.presentation.dto.request.ChatRequest;
 import com.investment.findfriend.domain.chat.presentation.dto.response.GenerateChatResponse;
 import com.investment.findfriend.domain.chat.repository.ChatRepository;
+import com.investment.findfriend.domain.friend.exception.FriendNotFoundException;
+import com.investment.findfriend.domain.friend.repository.FriendRepository;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.feign.dto.request.gpt.ChatGPTMessage;
@@ -19,8 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,6 +28,7 @@ import java.util.List;
 public class PostChatService {
     private final UserRepository userRepository;
     private final ChatRepository chatRepository;
+    private final FriendRepository friendRepository;
     private final JwtUtil jwtUtil;
     private final ChatGPTClient chatGPTClient;
     private final ChatGPTProperties chatGPTProperties;
@@ -50,6 +51,9 @@ public class PostChatService {
                 Chat.builder()
                         .user(user)
                         .userMessage(request.getText())
+                        .friend(friendRepository.findById(request.getFriendId()).orElseThrow(
+                                () -> FriendNotFoundException.EXCEPTION
+                        ))
                         .replyMessage(response.getChoices().get(0).getMessage().getContent())
                         .timestamp(LocalDateTime.now())
                         .build()
