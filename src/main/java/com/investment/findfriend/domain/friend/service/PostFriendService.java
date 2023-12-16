@@ -9,6 +9,7 @@ import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.jwt.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,16 +22,21 @@ public class PostFriendService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
+    @Transactional
     public ResponseEntity<String> execute(PostFriendRequest request, HttpServletRequest httpServletRequest) {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
-        friendRepository.save(Friend.builder()
+
+        Friend friend = Friend.builder()
                 .user(user)
                 .statusMessage(request.getStatusMessage())
                 .authority(Authority.ROLE_FREE)
                 .name(request.getName())
-                .build());
+                .build();
+
+        friendRepository.save(friend);
+        user.getFriends().add(friend);
         return ResponseEntity.ok("success");
     }
 }
