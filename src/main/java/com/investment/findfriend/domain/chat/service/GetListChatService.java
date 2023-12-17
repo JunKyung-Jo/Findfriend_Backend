@@ -33,7 +33,7 @@ public class GetListChatService {
                 () -> UserNotFoundException.EXCEPTION
         );
 
-        Friend friend = friendRepository.findById(request.getId()).orElseThrow(
+        Friend friend = friendRepository.findById(request.getFriendId()).orElseThrow(
                 () -> FriendNotFoundException.EXCEPTION
         );
 
