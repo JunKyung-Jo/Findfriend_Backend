@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class GetListChatRequest {
-    private Long id;
+    private Long friendId;
 }
