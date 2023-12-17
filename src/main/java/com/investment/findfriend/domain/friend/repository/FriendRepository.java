@@ -15,4 +15,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             User user,
             Authority customAuthority
     );
+
+    List<Friend> findByAuthorityIn(List<Authority> authorities);
 }
