@@ -29,7 +29,7 @@ public class GetFriendListService {
         );
 
         List<Friend> friendList = friendRepository.findByAuthorityInAndUserOrAuthorityIn(
-                Authority.ROLE_CUSTOM,
+                List.of(Authority.ROLE_CUSTOM),
                 user,
                 List.of(Authority.ROLE_ANNOUNCE, Authority.ROLE_FREE)
         );
