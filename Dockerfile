@@ -1,4 +1,5 @@
-FROM openjdk:17-oracle
+#FROM openjdk:17-oracle
+FROM adoptopenjdk:17-jdk-hotspot-buster-armv7
 
 WORKDIR /app
 
@@ -8,4 +9,4 @@ COPY ${JAR_FILE} app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-ja   r", "app.jar"]
