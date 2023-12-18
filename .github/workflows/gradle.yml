@@ -1,6 +1,5 @@
 name: Java CI with Gradle
 
-# master 브랜치에 push, PR 이벤트 발생시 동작.
 on:
   push:
     branches: [ "develop" ]
@@ -21,7 +20,7 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: permission
+      - name: Permission
         run: chmod +x ./gradlew
 
       # Spring Boot 어플리케이션 Build (1)
@@ -29,18 +28,25 @@ jobs:
         run: ./gradlew clean build --exclude-task test
 
       # Docker 이미지 Build (2)
-      - name: docker image build
-        run: docker build -t woosoungcho/findfriend:latest .
+      - name: Docker Image Build
+        run: docker buildx create --use && docker buildx inspect --bootstrap
+        if: runner.os == 'Linux'
 
-      # DockerHub Login (3)
-      - name: docker login
+      - name: Build ARM Docker Image
+        run: |
+          docker buildx create --use
+          docker buildx inspect --bootstrap
+          docker buildx build --platform linux/arm64 -t woosoungcho/findfriend:latest .
+        if: runner.os == 'Linux'
+
+      - name: DockerHub Login (3)
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Docker Hub push (4)
-      - name: docker Hub push
+      - name: Docker Hub Push
         run: docker push woosoungcho/findfriend:latest
 
       - name: Connect to WAS & Execute Application
