@@ -28,10 +28,10 @@ public class GetFriendListService {
                 () -> UserNotFoundException.EXCEPTION
         );
 
-        List<Friend> friendList = friendRepository.findByAuthorityInAndUserOrAuthorityAndUserIsNull(
-                List.of(Authority.ROLE_ANNOUNCE, Authority.ROLE_FREE),
+        List<Friend> friendList = friendRepository.findByAuthorityInAndUserOrAuthorityIn(
+                Authority.ROLE_CUSTOM,
                 user,
-                Authority.ROLE_CUSTOM
+                List.of(Authority.ROLE_ANNOUNCE, Authority.ROLE_FREE)
         );
 
         return ResponseEntity.ok(friendList.stream()
