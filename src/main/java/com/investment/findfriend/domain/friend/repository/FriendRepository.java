@@ -10,10 +10,10 @@ import java.util.List;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Long> {
-    List<Friend> findByAuthorityInAndUserOrAuthorityAndUserIsNull(
-            List<Authority> authorities,
+    List<Friend> findByAuthorityInAndUserOrAuthorityIn(
+            Authority customAuthority,
             User user,
-            Authority customAuthority
+            List<Authority> authorities
     );
 
     List<Friend> findByAuthorityIn(List<Authority> authorities);
