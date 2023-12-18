@@ -31,7 +31,7 @@ public class PostFriendService {
         Friend friend = Friend.builder()
                 .user(user)
                 .statusMessage(request.getStatusMessage())
-                .authority(Authority.ROLE_FREE)
+                .authority(Authority.ROLE_CUSTOM)
                 .name(request.getName())
                 .build();
 
