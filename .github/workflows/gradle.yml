@@ -30,7 +30,7 @@ jobs:
 
       # Docker 이미지 Build (2)
       - name: docker image build
-        run: docker build -t woosoungcho/findfriend .
+        run: docker build -t woosoungcho/findfriend:latest .
 
       # DockerHub Login (3)
       - name: docker login
@@ -41,7 +41,7 @@ jobs:
 
       # Docker Hub push (4)
       - name: docker Hub push
-        run: docker push woosoungcho/findfriend
+        run: docker push woosoungcho/findfriend:latest
 
       - name: Connect to WAS & Execute Application
         uses: appleboy/ssh-action@v0.1.6
