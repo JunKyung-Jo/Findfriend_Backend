@@ -18,9 +18,9 @@ public class SaveRefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
 
-    public ResponseEntity<TokenResponse> execute(String email, Authority authority) {
-        String accessToken = jwtProvider.createAccessToken(email, authority);
-        String refreshToken = jwtProvider.createRefreshToken(email, authority);
+    public ResponseEntity<TokenResponse> execute(String email) {
+        String accessToken = jwtProvider.createAccessToken(email);
+        String refreshToken = jwtProvider.createRefreshToken(email);
 
         Optional<RefreshToken> refresh_token = refreshTokenRepository.findByEmail(email);
 
