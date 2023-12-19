@@ -48,18 +48,17 @@ public class UserSignUpService {
                     googleTokenResponse.getAccess_token()
             );
 
-            User user = User.builder()
-                    .name(googleUserInfoResponse.getName())
-                    .authority(Authority.ROLE_USER)
-                    .email(googleUserInfoResponse.getEmail())
-                    .statusMessage("상태 메시지")
-                    .build();
-
             if (userRepository.findByEmail(googleUserInfoResponse.getEmail()).isEmpty()) {
-                userRepository.save(user);
+                userRepository.save(
+                        User.builder()
+                        .name(googleUserInfoResponse.getName())
+                        .authority(Authority.ROLE_USER)
+                        .email(googleUserInfoResponse.getEmail())
+                        .statusMessage("상태 메시지")
+                        .build());
             }
 
-            return saveRefreshTokenService.execute(googleUserInfoResponse.getEmail(), user.getAuthority());
+            return saveRefreshTokenService.execute(googleUserInfoResponse.getEmail());
         } else if (auth == Auth.NAVER) {
             NaverTokenResponse naverTokenResponse = naverGetTokenClient.execute(
                     code,
@@ -72,20 +71,19 @@ public class UserSignUpService {
                     naverTokenResponse.getToken_type() + " " + naverTokenResponse.getAccess_token()
             ).getResponse();
 
-            User user = User.builder()
-                    .name(naverUserInfoResponse.getName())
-                    .email(naverUserInfoResponse.getEmail())
-                    .gender(naverUserInfoResponse.getGender().equals("M") ? Gender.MALE : Gender.FEMALE)
-                    .authority(Authority.ROLE_USER)
-                    .birthdate(LocalDate.parse(naverUserInfoResponse.getBirthyear() + "-" + naverUserInfoResponse.getBirthday()))
-                    .phone(naverUserInfoResponse.getMobile())
-                    .statusMessage("상태 메시지")
-                    .build();
-
             if (userRepository.findByEmail(naverUserInfoResponse.getEmail()).isEmpty()) {
-                userRepository.save(user);
+                userRepository.save(
+                        User.builder()
+                        .name(naverUserInfoResponse.getName())
+                        .email(naverUserInfoResponse.getEmail())
+                        .gender(naverUserInfoResponse.getGender().equals("M") ? Gender.MALE : Gender.FEMALE)
+                        .authority(Authority.ROLE_USER)
+                        .birthdate(LocalDate.parse(naverUserInfoResponse.getBirthyear() + "-" + naverUserInfoResponse.getBirthday()))
+                        .phone(naverUserInfoResponse.getMobile())
+                        .statusMessage("상태 메시지")
+                        .build());
             }
-            return saveRefreshTokenService.execute(naverUserInfoResponse.getEmail(), user.getAuthority());
+            return saveRefreshTokenService.execute(naverUserInfoResponse.getEmail());
         }
         return null;
     }

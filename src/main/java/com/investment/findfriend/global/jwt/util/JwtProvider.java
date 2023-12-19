@@ -1,6 +1,5 @@
 package com.investment.findfriend.global.jwt.util;
 
-import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.global.jwt.properties.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,19 +14,18 @@ public class JwtProvider {
 
     private final JwtProperties jwtProperties;
 
-    public String createAccessToken(String email, Authority authority) {
-        return createToken(email, authority, jwtProperties.getAccessExp());
+    public String createAccessToken(String email) {
+        return createToken(email, jwtProperties.getAccessExp());
     }
 
-    public String createRefreshToken(String email, Authority authority) {
-        return createToken(email, authority, jwtProperties.getRefreshExp());
+    public String createRefreshToken(String email) {
+        return createToken(email, jwtProperties.getRefreshExp());
     }
 
-    private String createToken(String email, Authority authority, long expirationTime) {
+    private String createToken(String email, long expirationTime) {
         Date now = new Date();
         return Jwts.builder()
                 .setSubject(email)
-                .claim("AUTHORIZATION_KEY", authority)
                 .signWith(jwtProperties.getSecret(), SignatureAlgorithm.HS256)
                 .setExpiration(new Date(now.getTime() + expirationTime))
                 .compact();
