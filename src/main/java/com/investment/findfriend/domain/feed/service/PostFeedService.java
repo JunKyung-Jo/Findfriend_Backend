@@ -53,7 +53,9 @@ public class PostFeedService {
                 .friend(friendRepository.findById(request.getFriendId()).orElseThrow(
                         () -> FriendNotFoundException.EXCEPTION
                 ))
+                .url(url)
                 .tags(userTagsList)
+
                 .build());
         return ResponseEntity.ok(FeedResponse.builder()
                 .url(url)
