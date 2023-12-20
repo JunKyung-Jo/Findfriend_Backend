@@ -13,6 +13,9 @@ public enum ErrorCode {
     TOKEN_NOT_FOUND(404, "토큰이 존재하지 않습니다"),
     REFRESH_TOKEN_NOT_FOUND(404, "토큰이 DB에 존재하지 않습니다"),
     FRIEND_NOT_FOUND(404, "친구를 찾을 수 없습니다"),
+    FILE_NOT_FOUND(404, "이미지가 존재하지 않습니다"),
+    UNAUTHORIZED(403, "권한이 올바르지 않습니다"),
+    FILE_SAVE_ERROR(500, "파일 저장 오류"),
     BAD_REQUEST(400, "잘못된 요청입니다");
 
     private final int status;
