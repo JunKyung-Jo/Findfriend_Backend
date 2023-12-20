@@ -2,7 +2,6 @@ package com.investment.findfriend.domain.chat.service;
 
 import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
 import com.investment.findfriend.domain.chat.domain.Chat;
-import com.investment.findfriend.domain.chat.presentation.dto.request.GetListChatRequest;
 import com.investment.findfriend.domain.chat.presentation.dto.response.ChatResponse;
 import com.investment.findfriend.domain.chat.repository.ChatRepository;
 import com.investment.findfriend.domain.friend.domain.Friend;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +26,12 @@ public class GetListChatService {
     private final ChatRepository chatRepository;
     private final JwtUtil jwtUtil;
 
-    public ResponseEntity<List<ChatResponse>> execute(GetListChatRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<List<ChatResponse>> execute(Long id, HttpServletRequest httpServletRequest) {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
 
-        Friend friend = friendRepository.findById(request.getFriendId()).orElseThrow(
+        Friend friend = friendRepository.findById(id).orElseThrow(
                 () -> FriendNotFoundException.EXCEPTION
         );
 
@@ -47,7 +45,7 @@ public class GetListChatService {
                                 .replyMessage(chat.getReplyMessage())
                                 .timestamp(chat.getTimestamp())
                                 .build())
-                        .collect(Collectors.toList())
+                        .toList()
         );
 
     }

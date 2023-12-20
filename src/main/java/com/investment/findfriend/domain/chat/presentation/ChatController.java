@@ -1,7 +1,6 @@
 package com.investment.findfriend.domain.chat.presentation;
 
 import com.investment.findfriend.domain.chat.presentation.dto.request.ChatRequest;
-import com.investment.findfriend.domain.chat.presentation.dto.request.GetListChatRequest;
 import com.investment.findfriend.domain.chat.presentation.dto.response.ChatResponse;
 import com.investment.findfriend.domain.chat.presentation.dto.response.GenerateChatResponse;
 import com.investment.findfriend.domain.chat.service.GetListChatService;
@@ -27,7 +26,7 @@ public class ChatController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ChatResponse>> getListChat(@RequestBody GetListChatRequest request, HttpServletRequest httpServletRequest) {
-        return getListChatService.execute(request, httpServletRequest);
+    public ResponseEntity<List<ChatResponse>> getListChat(@RequestParam Long id, HttpServletRequest httpServletRequest) {
+        return getListChatService.execute(id, httpServletRequest);
     }
 }
