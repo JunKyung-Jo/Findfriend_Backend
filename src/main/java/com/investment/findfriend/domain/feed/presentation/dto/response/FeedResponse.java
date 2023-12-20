@@ -9,6 +9,6 @@ import java.util.List;
 @Builder
 public class FeedResponse {
     private String content;
-    private String resource;
+    private String url;
     private List<String> users;
 }
