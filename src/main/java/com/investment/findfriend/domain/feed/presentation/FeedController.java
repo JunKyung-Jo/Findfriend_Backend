@@ -1,7 +1,6 @@
 package com.investment.findfriend.domain.feed.presentation;
 
 import com.investment.findfriend.domain.feed.presentation.dto.request.PostFeedRequest;
-import com.investment.findfriend.domain.feed.presentation.dto.response.FeedResponse;
 import com.investment.findfriend.domain.feed.service.PostFeedService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ public class FeedController {
     private final PostFeedService postPostService;
 
     @PostMapping
-    public ResponseEntity<FeedResponse> postFeed(@RequestPart("data") PostFeedRequest request, @RequestPart("file") MultipartFile file,  HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> postFeed(@RequestPart("data") PostFeedRequest request, @RequestPart("file") MultipartFile file,  HttpServletRequest httpServletRequest) {
         return postPostService.execute(request, file, httpServletRequest);
     }
 
