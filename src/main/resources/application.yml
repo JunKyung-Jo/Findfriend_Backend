@@ -35,4 +35,4 @@ openai:
   temperature: ${OPENAI_TEMPERATURE}
 
 root:
-  path: /findfriend/feedImages
+  path: ${ROOT_PATH}

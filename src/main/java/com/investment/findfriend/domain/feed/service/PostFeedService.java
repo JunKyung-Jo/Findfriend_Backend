@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +33,8 @@ public class PostFeedService {
     private final FeedRepository feedRepository;
     private final FileSaveUtil fileSaveUtil;
 
-    public ResponseEntity<FeedResponse> execute(PostFeedRequest request, HttpServletRequest httpServletRequest) {
-        if (request.getFile().isEmpty()) {
+    public ResponseEntity<FeedResponse> execute(PostFeedRequest request, MultipartFile file, HttpServletRequest httpServletRequest) {
+        if (file.isEmpty()) {
             throw FileNotFoundException.EXCEPTION;
         }
         Optional<User> user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest));
@@ -41,7 +42,7 @@ public class PostFeedService {
             throw UnAuthorizedException.EXCEPTION;
         }
 
-        String url = fileSaveUtil.save(request.getFile());
+        String url = fileSaveUtil.save(file);
 
         List<User> userTagsList = request.getUserIds().stream()
                         .map(id -> userRepository.findById(id).orElseThrow(
@@ -55,7 +56,6 @@ public class PostFeedService {
                 ))
                 .url(url)
                 .tags(userTagsList)
-
                 .build());
         return ResponseEntity.ok(FeedResponse.builder()
                 .url(url)
