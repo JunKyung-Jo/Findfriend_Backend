@@ -1,6 +1,7 @@
 package com.investment.findfriend.domain.friend.domain;
 
 import com.investment.findfriend.domain.chat.domain.Chat;
+import com.investment.findfriend.domain.feed.domain.Feed;
 import com.investment.findfriend.domain.friend.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.User;
 import jakarta.persistence.*;
@@ -24,6 +25,7 @@ public class Friend {
     @Column
     private String statusMessage;
 
+    @Setter
     @Column
     private Authority authority;
 
@@ -34,7 +36,7 @@ public class Friend {
     @OneToMany(mappedBy = "friend")
     private List<Chat> chats;
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
-    }
+    @OneToOne(mappedBy = "friend")
+    private Feed feed;
+
 }

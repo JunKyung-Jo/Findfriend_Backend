@@ -1,6 +1,7 @@
 package com.investment.findfriend.domain.user.domain;
 
 import com.investment.findfriend.domain.chat.domain.Chat;
+import com.investment.findfriend.domain.feed.domain.Feed;
 import com.investment.findfriend.domain.friend.domain.Friend;
 import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.type.Gender;
@@ -48,6 +49,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Chat> chats;
+
+    @ManyToOne
+    private Feed feed;
 
     public void update(UpdateUserInfoRequest request) {
         this.name = request.getName();
