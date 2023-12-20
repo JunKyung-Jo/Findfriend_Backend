@@ -12,6 +12,7 @@ spring:
     open-in-view: false
 
 server:
+  url: ${SERVER_URL}
   servlet:
     context-path: /api
 
