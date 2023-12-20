@@ -1,6 +1,6 @@
 package com.investment.findfriend.domain.auth.service;
 
-import com.investment.findfriend.domain.feed.exception.FileSaveException;
+import com.investment.findfriend.domain.feed.exception.FileException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +24,7 @@ public class FileSaveUtil {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             return String.format("%s/%s", rootPath, fileName);
         } catch (IOException e) {
-            throw FileSaveException.EXCEPTION;
+            throw FileException.EXCEPTION;
         }
     }
 }

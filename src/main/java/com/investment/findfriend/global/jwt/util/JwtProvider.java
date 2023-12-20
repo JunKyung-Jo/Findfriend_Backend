@@ -26,6 +26,7 @@ public class JwtProvider {
         Date now = new Date();
         return Jwts.builder()
                 .setSubject(email)
+                .claim("email", email)
                 .signWith(jwtProperties.getSecret(), SignatureAlgorithm.HS256)
                 .setExpiration(new Date(now.getTime() + expirationTime))
                 .compact();

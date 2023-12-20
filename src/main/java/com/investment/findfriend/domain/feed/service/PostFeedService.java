@@ -6,7 +6,6 @@ import com.investment.findfriend.domain.feed.domain.Feed;
 import com.investment.findfriend.domain.feed.exception.FileNotFoundException;
 import com.investment.findfriend.domain.feed.exception.UnAuthorizedException;
 import com.investment.findfriend.domain.feed.presentation.dto.request.PostFeedRequest;
-import com.investment.findfriend.domain.feed.presentation.dto.response.FeedResponse;
 import com.investment.findfriend.domain.feed.repository.FeedRepository;
 import com.investment.findfriend.domain.friend.exception.FriendNotFoundException;
 import com.investment.findfriend.domain.friend.repository.FriendRepository;
@@ -33,7 +32,7 @@ public class PostFeedService {
     private final FeedRepository feedRepository;
     private final FileSaveUtil fileSaveUtil;
 
-    public ResponseEntity<FeedResponse> execute(PostFeedRequest request, MultipartFile file, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> execute(PostFeedRequest request, MultipartFile file, HttpServletRequest httpServletRequest) {
         if (file.isEmpty()) {
             throw FileNotFoundException.EXCEPTION;
         }
@@ -57,8 +56,6 @@ public class PostFeedService {
                 .url(url)
                 .tags(userTagsList)
                 .build());
-        return ResponseEntity.ok(FeedResponse.builder()
-                .url(url)
-                .build());
+        return ResponseEntity.ok("success");
     }
 }
