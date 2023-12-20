@@ -50,8 +50,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Chat> chats;
 
-    @ManyToOne
-    private Feed feed;
+    @ManyToMany
+    private List<Feed> feed;
 
     public void update(UpdateUserInfoRequest request) {
         this.name = request.getName();
