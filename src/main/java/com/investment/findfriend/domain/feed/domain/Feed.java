@@ -21,6 +21,9 @@ public class Feed {
     private String content;
 
     @Column
+    private String url;
+
+    @Column
     @OneToMany(mappedBy = "feed")
     private List<User> tags;
 
