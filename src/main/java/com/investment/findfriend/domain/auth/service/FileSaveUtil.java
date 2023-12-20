@@ -20,8 +20,7 @@ public class FileSaveUtil {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path path = rootPath.resolve(
                     Paths.get(fileName)
-                            .normalize()
-                            .toAbsolutePath());
+                            .normalize());
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             return String.format("%s/%s", rootPath, fileName);
         } catch (IOException e) {

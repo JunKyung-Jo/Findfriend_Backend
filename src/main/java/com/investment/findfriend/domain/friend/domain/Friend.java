@@ -36,7 +36,7 @@ public class Friend {
     @OneToMany(mappedBy = "friend")
     private List<Chat> chats;
 
-    @OneToOne(mappedBy = "friend")
-    private Feed feed;
+    @OneToMany(mappedBy = "friend")
+    private List<Feed> feed;
 
 }

@@ -27,6 +27,6 @@ public class Feed {
     @OneToMany(mappedBy = "feed")
     private List<User> tags;
 
-    @OneToOne
+    @ManyToOne
     private Friend friend;
 }

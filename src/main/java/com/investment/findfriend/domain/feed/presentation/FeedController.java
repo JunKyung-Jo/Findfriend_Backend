@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +17,8 @@ public class FeedController {
     private final PostFeedService postPostService;
 
     @PostMapping
-    public ResponseEntity<FeedResponse> postFeed(@RequestBody PostFeedRequest request, HttpServletRequest httpServletRequest) {
-        return postPostService.execute(request, httpServletRequest);
+    public ResponseEntity<FeedResponse> postFeed(@RequestPart("data") PostFeedRequest request, @RequestPart("file") MultipartFile file,  HttpServletRequest httpServletRequest) {
+        return postPostService.execute(request, file, httpServletRequest);
     }
 
 }
