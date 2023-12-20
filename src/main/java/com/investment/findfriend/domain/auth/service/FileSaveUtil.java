@@ -1,7 +1,6 @@
 package com.investment.findfriend.domain.auth.service;
 
 import com.investment.findfriend.domain.feed.exception.FileSaveException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,10 +10,9 @@ import java.nio.file.*;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
 public class FileSaveUtil {
 
-    @Value("${ROOT_PATH}")
+    @Value("${root.path}")
     private Path rootPath;
 
     public String save(MultipartFile file) {
