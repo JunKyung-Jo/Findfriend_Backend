@@ -47,6 +47,8 @@ public class PostChatService {
                         .build()))
                 .build(), "Bearer " + chatGPTProperties.getApiKey());
 
+        System.out.println(request.getText() + " " + response.getChoices().get(0).getMessage().getContent());
+
         chatRepository.save(
                 Chat.builder()
                         .user(user)
