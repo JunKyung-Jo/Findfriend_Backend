@@ -3,6 +3,7 @@ package com.investment.findfriend.domain.friend.domain;
 import com.investment.findfriend.domain.chat.domain.Chat;
 import com.investment.findfriend.domain.feed.domain.Feed;
 import com.investment.findfriend.domain.friend.domain.type.Authority;
+import com.investment.findfriend.domain.friend.domain.type.Personality;
 import com.investment.findfriend.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,10 @@ public class Friend {
     @Setter
     @Column
     private Authority authority;
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection
+    private List<Personality> personalities;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
