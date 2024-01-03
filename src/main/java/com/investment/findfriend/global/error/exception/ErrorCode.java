@@ -15,6 +15,7 @@ public enum ErrorCode {
     FRIEND_NOT_FOUND(404, "친구를 찾을 수 없습니다"),
     FILE_NOT_FOUND(404, "이미지가 존재하지 않습니다"),
     UNAUTHORIZED(403, "권한이 올바르지 않습니다"),
+    FEED_NOT_FOUND(404, "피드가 존재하지 않습니다"),
     FILE_ERROR(500, "파일 오류"),
     BAD_REQUEST(400, "잘못된 요청입니다");
 
