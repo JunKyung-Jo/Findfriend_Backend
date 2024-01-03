@@ -33,6 +33,7 @@ public class PostFriendService {
                 .statusMessage(request.getStatusMessage())
                 .authority(Authority.ROLE_CUSTOM)
                 .name(request.getName())
+                .personalities(request.getPersonalities())
                 .build();
 
         friendRepository.save(friend);
