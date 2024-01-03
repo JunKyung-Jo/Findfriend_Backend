@@ -1,7 +1,7 @@
 package com.investment.findfriend.domain.likes.service;
 
 import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
-import com.investment.findfriend.domain.feed.repository.FeedRepository;
+import com.investment.findfriend.domain.likes.repository.LikesRepository;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.jwt.util.JwtUtil;
@@ -17,14 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteLikeService {
 
     private final UserRepository userRepository;
-    private final FeedRepository feedRepository;
+    private final LikesRepository likesRepository;
     private final JwtUtil jwtUtil;
 
     public ResponseEntity<String> execute(Long feedId, HttpServletRequest httpServletRequest) {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
-        feedRepository.deleteByIdAndUser(feedId, user);
+        likesRepository.deleteByIdAndUser(feedId, user);
         return ResponseEntity.ok("success");
     }
 }

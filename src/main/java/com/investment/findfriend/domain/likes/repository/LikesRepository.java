@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LikesRepository extends JpaRepository<Likes, Long> {
     Boolean existsByUserAndFeed(User user, Feed feed);
+
+    void deleteByIdAndUser(Long feedId, User user);
 }
