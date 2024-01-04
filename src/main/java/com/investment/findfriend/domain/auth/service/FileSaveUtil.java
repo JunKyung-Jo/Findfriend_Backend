@@ -27,6 +27,7 @@ public class FileSaveUtil {
             System.out.println("success");
             return String.format("%s/%s", rootPath, fileName);
         } catch (IOException e) {
+            e.printStackTrace();
             throw FileException.EXCEPTION;
         }
     }
