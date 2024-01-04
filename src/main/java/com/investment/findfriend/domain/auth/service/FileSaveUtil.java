@@ -23,6 +23,7 @@ public class FileSaveUtil {
                     Paths.get(fileName)
                             .normalize());
             System.out.println(path);
+            Files.createFile(path);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("success");
             return String.format("%s/%s", rootPath, fileName);
