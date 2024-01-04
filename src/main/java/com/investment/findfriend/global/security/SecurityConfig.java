@@ -1,6 +1,7 @@
 package com.investment.findfriend.global.security;
 
 import com.investment.findfriend.domain.auth.repository.RefreshTokenRepository;
+import com.investment.findfriend.global.error.ExceptionFilter;
 import com.investment.findfriend.global.jwt.filter.JwtFilter;
 import com.investment.findfriend.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api").permitAll()
                                 .anyRequest().permitAll())
                 .addFilterBefore(new JwtFilter(jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionFilter(), JwtFilter.class)
                 .build();
     }
 

@@ -2,7 +2,6 @@ package com.investment.findfriend.global.jwt.filter;
 
 import com.investment.findfriend.domain.auth.repository.RefreshTokenRepository;
 import com.investment.findfriend.global.jwt.exception.LoggedOutAccessTokenException;
-import com.investment.findfriend.global.jwt.exception.TokenNotFoundException;
 import com.investment.findfriend.global.jwt.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,13 +24,10 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
 
-        if (token == null) {
-            throw TokenNotFoundException.EXCEPTION;
-        } else {
+        if (token != null) {
             if (!refreshTokenRepository.existsByAccessToken(token)) {
                 throw LoggedOutAccessTokenException.EXCEPTION;
             }
-
             Authentication authentication = jwtUtil.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
