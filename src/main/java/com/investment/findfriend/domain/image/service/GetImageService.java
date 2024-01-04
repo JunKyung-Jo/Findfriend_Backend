@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,7 +26,7 @@ public class GetImageService {
         Feed feed = feedRepository.findById(feedId).orElseThrow(
                 () -> FeedNotFoundException.EXCEPTION
         );
-        Path path = Paths.get(feed.getUrl());
+        Path path = Paths.get(URI.create(feed.getUrl()));
         Resource resource = new UrlResource(path.toUri());
         String contentType = httpServletRequest.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         return ResponseEntity.ok()
