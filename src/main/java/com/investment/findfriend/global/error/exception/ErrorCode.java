@@ -17,7 +17,8 @@ public enum ErrorCode {
     FEED_NOT_FOUND(404, "피드가 존재하지 않습니다"),
     UNAUTHORIZED(403, "권한이 올바르지 않습니다"),
     FILE_ERROR(500, "파일 오류"),
-    BAD_REQUEST(400, "잘못된 요청입니다");
+    BAD_REQUEST(400, "잘못된 요청입니다"),
+    ACCESS_DENIED(403, "로그인이 되어있지 않습니다");
 
     private final int status;
     private final String message;
