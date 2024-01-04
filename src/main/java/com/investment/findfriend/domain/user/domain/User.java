@@ -44,6 +44,9 @@ public class User {
     @Column
     private String statusMessage;
 
+    @Column
+    private String url;
+
     @OneToMany
     private List<Friend> friends;
 
@@ -53,8 +56,9 @@ public class User {
     @ManyToMany
     private List<Feed> feed;
 
-    public void update(UpdateUserInfoRequest request) {
+    public void update(UpdateUserInfoRequest request, String url) {
         this.name = request.getName();
         this.statusMessage = request.getStatusMessage();
+        this.url = url;
     }
 }

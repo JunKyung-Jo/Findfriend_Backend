@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateUserInfo(@RequestBody UpdateUserInfoRequest request, HttpServletRequest httpServletRequest) {
-        return updateUserInfoService.execute(request, httpServletRequest);
+    public ResponseEntity<String> updateUserInfo(@RequestPart UpdateUserInfoRequest request, @RequestPart MultipartFile file, HttpServletRequest httpServletRequest) {
+        return updateUserInfoService.execute(request, file, httpServletRequest);
     }
 
 }
