@@ -2,14 +2,16 @@ package com.investment.findfriend.domain.auth.service;
 
 import com.investment.findfriend.domain.auth.domain.Auth;
 import com.investment.findfriend.domain.auth.presentation.dto.response.TokenResponse;
+import com.investment.findfriend.domain.file.domain.File;
+import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.type.Gender;
-import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.feign.dto.request.google.GoogleTokenRequest;
 import com.investment.findfriend.global.feign.dto.response.google.GoogleTokenResponse;
 import com.investment.findfriend.global.feign.dto.response.google.GoogleUserInfoResponse;
-import com.investment.findfriend.global.feign.dto.response.naver.*;
+import com.investment.findfriend.global.feign.dto.response.naver.NaverTokenResponse;
+import com.investment.findfriend.global.feign.dto.response.naver.NaverUserInfoResponse;
 import com.investment.findfriend.global.feign.google.GoogleGetTokenClient;
 import com.investment.findfriend.global.feign.google.GoogleGetUserInfoClient;
 import com.investment.findfriend.global.feign.naver.NaverGetTokenClient;
@@ -55,6 +57,7 @@ public class UserSignUpService {
                         .authority(Authority.ROLE_USER)
                         .email(googleUserInfoResponse.getEmail())
                         .statusMessage("상태 메시지")
+                                .file(File.builder().build())
                         .build());
             }
 

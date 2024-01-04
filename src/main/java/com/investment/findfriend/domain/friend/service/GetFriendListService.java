@@ -40,7 +40,7 @@ public class GetFriendListService {
                         .authority(friend.getAuthority())
                         .statusMessage(friend.getStatusMessage())
                         .name(friend.getName())
-                        .url(friend.getUrl())
+                        .path(friend.getFile().getPath())
                         .build())
                 .toList());
     }

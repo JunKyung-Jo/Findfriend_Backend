@@ -2,6 +2,7 @@ package com.investment.findfriend.domain.friend.service;
 
 import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
 import com.investment.findfriend.domain.auth.service.FileSaveUtil;
+import com.investment.findfriend.domain.file.domain.File;
 import com.investment.findfriend.domain.friend.domain.Friend;
 import com.investment.findfriend.domain.friend.domain.type.Authority;
 import com.investment.findfriend.domain.friend.presentation.dto.request.PostFriendRequest;
@@ -37,7 +38,9 @@ public class PostFriendService {
                 .authority(Authority.ROLE_CUSTOM)
                 .name(request.getName())
                 .personalities(request.getPersonalities())
-                .url(fileSaveUtil.save(file))
+                .file(File.builder()
+                        .path(fileSaveUtil.save(file))
+                        .build())
                 .build();
 
         friendRepository.save(friend);

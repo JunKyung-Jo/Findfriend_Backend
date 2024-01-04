@@ -1,8 +1,8 @@
-package com.investment.findfriend.domain.image.service;
+package com.investment.findfriend.domain.file.service;
 
-import com.investment.findfriend.domain.feed.domain.Feed;
-import com.investment.findfriend.domain.feed.exception.FeedNotFoundException;
-import com.investment.findfriend.domain.feed.repository.FeedRepository;
+import com.investment.findfriend.domain.feed.exception.FileNotFoundException;
+import com.investment.findfriend.domain.file.domain.File;
+import com.investment.findfriend.domain.file.repository.FileRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -17,15 +17,15 @@ import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
-public class GetImageService {
+public class GetFileService {
 
-    private final FeedRepository feedRepository;
+    private final FileRepository fileRepository;
 
-    public ResponseEntity<Resource> execute(Long feedId, HttpServletRequest httpServletRequest) throws IOException {
-        Feed feed = feedRepository.findById(feedId).orElseThrow(
-                () -> FeedNotFoundException.EXCEPTION
+    public ResponseEntity<Resource> execute(Long fileId, HttpServletRequest httpServletRequest) throws IOException {
+        File file = fileRepository.findById(fileId).orElseThrow(
+                () -> FileNotFoundException.EXCEPTION
         );
-        Path path = Paths.get(feed.getUrl());
+        Path path = Paths.get(file.getPath());
         Resource resource = new UrlResource(path.toUri());
         String contentType = httpServletRequest.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         return ResponseEntity.ok()

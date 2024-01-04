@@ -2,6 +2,7 @@ package com.investment.findfriend.domain.friend.domain;
 
 import com.investment.findfriend.domain.chat.domain.Chat;
 import com.investment.findfriend.domain.feed.domain.Feed;
+import com.investment.findfriend.domain.file.domain.File;
 import com.investment.findfriend.domain.friend.domain.type.Authority;
 import com.investment.findfriend.domain.friend.domain.type.Personality;
 import com.investment.findfriend.domain.user.domain.User;
@@ -34,9 +35,6 @@ public class Friend {
     @ElementCollection
     private List<Personality> personalities;
 
-    @Column
-    private String url;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -46,5 +44,8 @@ public class Friend {
 
     @OneToMany(mappedBy = "friend")
     private List<Feed> feed;
+
+    @OneToOne
+    private File file;
 
 }

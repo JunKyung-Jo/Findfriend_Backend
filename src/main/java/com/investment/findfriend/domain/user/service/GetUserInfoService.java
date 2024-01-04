@@ -33,7 +33,7 @@ public class GetUserInfoService {
                                 .name(friend.getName())
                                 .statusMessage(friend.getStatusMessage())
                                 .authority(friend.getAuthority())
-                                .url(user.getUrl())
+                                .path(user.getFile().getPath())
                                 .build())
                         .toList())
                 .build());

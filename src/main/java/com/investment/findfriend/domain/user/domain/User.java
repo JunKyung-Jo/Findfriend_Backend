@@ -2,6 +2,7 @@ package com.investment.findfriend.domain.user.domain;
 
 import com.investment.findfriend.domain.chat.domain.Chat;
 import com.investment.findfriend.domain.feed.domain.Feed;
+import com.investment.findfriend.domain.file.domain.File;
 import com.investment.findfriend.domain.friend.domain.Friend;
 import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.type.Gender;
@@ -44,9 +45,6 @@ public class User {
     @Column
     private String statusMessage;
 
-    @Column
-    private String url;
-
     @OneToMany
     private List<Friend> friends;
 
@@ -56,9 +54,11 @@ public class User {
     @ManyToMany
     private List<Feed> feed;
 
-    public void update(UpdateUserInfoRequest request, String url) {
+    @OneToOne
+    private File file;
+
+    public void update(UpdateUserInfoRequest request) {
         this.name = request.getName();
         this.statusMessage = request.getStatusMessage();
-        this.url = url;
     }
 }
