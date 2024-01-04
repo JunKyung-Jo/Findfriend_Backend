@@ -11,5 +11,6 @@ import java.util.List;
 public class UserResponse {
     private String name;
     private String statusMessage;
+    private String url;
     private List<FriendResponse> friends;
 }

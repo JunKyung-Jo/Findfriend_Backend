@@ -27,6 +27,7 @@ public class GetUserInfoService {
         return ResponseEntity.ok(UserResponse.builder()
                 .name(user.getName())
                 .statusMessage(user.getStatusMessage())
+                .url(user.getUrl())
                 .friends(user.getFriends().stream()
                         .map(friend -> FriendResponse.builder()
                                 .id(friend.getId())
