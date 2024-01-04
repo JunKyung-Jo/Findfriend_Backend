@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class FriendController {
 
 
     @PostMapping("/meet")
-    public ResponseEntity<String> meetFriend(@RequestBody PostFriendRequest request, HttpServletRequest httpServletRequest) {
-        return postFriendService.execute(request, httpServletRequest);
+    public ResponseEntity<String> meetFriend(@RequestPart("data") PostFriendRequest request, @RequestPart MultipartFile file, HttpServletRequest httpServletRequest) {
+        return postFriendService.execute(request, file, httpServletRequest);
     }
 
     @GetMapping("/list")
