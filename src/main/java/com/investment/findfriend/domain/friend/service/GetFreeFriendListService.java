@@ -22,6 +22,7 @@ public class GetFreeFriendListService {
                         .authority(friend.getAuthority())
                         .statusMessage(friend.getStatusMessage())
                         .name(friend.getName())
+                        .url(friend.getUrl())
                         .build())
                 .toList());
     }

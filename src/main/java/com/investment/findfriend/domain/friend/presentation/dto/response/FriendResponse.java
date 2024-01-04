@@ -10,5 +10,6 @@ public class FriendResponse {
     private Long id;
     private String name;
     private String statusMessage;
+    private String url;
     private Authority authority;
 }
