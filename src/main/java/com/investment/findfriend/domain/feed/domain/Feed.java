@@ -1,5 +1,6 @@
 package com.investment.findfriend.domain.feed.domain;
 
+import com.investment.findfriend.domain.file.domain.File;
 import com.investment.findfriend.domain.friend.domain.Friend;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,8 +24,12 @@ public class Feed {
     private String url;
 
     @Column
+    @ElementCollection
     private List<String> tags;
 
     @ManyToOne
     private Friend friend;
+
+    @OneToOne
+    private File file;
 }
