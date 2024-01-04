@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateUserInfo(@RequestPart UpdateUserInfoRequest request, @RequestPart MultipartFile file, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> updateUserInfo(@RequestPart("data") UpdateUserInfoRequest request, @RequestPart("file") MultipartFile file, HttpServletRequest httpServletRequest) {
         return updateUserInfoService.execute(request, file, httpServletRequest);
     }
 

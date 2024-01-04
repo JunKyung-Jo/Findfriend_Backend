@@ -24,7 +24,7 @@ public class FriendController {
 
 
     @PostMapping("/meet")
-    public ResponseEntity<String> meetFriend(@RequestPart("data") PostFriendRequest request, @RequestPart MultipartFile file, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> meetFriend(@RequestPart("data") PostFriendRequest request, @RequestPart("file") MultipartFile file, HttpServletRequest httpServletRequest) {
         return postFriendService.execute(request, file, httpServletRequest);
     }
 
