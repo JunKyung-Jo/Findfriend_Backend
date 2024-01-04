@@ -9,5 +9,5 @@ import java.util.List;
 @Builder
 public class FeedResponse {
     private String content;
-    private List<String> users;
+    private List<String> tags;
 }

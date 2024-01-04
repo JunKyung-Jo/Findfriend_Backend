@@ -1,6 +1,5 @@
 package com.investment.findfriend.domain.feed.service;
 
-import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
 import com.investment.findfriend.domain.auth.service.FileSaveUtil;
 import com.investment.findfriend.domain.feed.domain.Feed;
 import com.investment.findfriend.domain.feed.exception.FileNotFoundException;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,18 +41,13 @@ public class PostFeedService {
 
         String url = fileSaveUtil.save(file);
 
-        List<User> userTagsList = request.getUserIds().stream()
-                        .map(id -> userRepository.findById(id).orElseThrow(
-                                () -> UserNotFoundException.EXCEPTION
-                        )).toList();
-
         feedRepository.save(Feed.builder()
                 .content(request.getContent())
                 .friend(friendRepository.findById(request.getFriendId()).orElseThrow(
                         () -> FriendNotFoundException.EXCEPTION
                 ))
                 .url(url)
-                .tags(userTagsList)
+                .tags(request.getTags())
                 .build());
         return ResponseEntity.ok("success");
     }

@@ -1,6 +1,7 @@
 package com.investment.findfriend.domain.image.service;
 
 import com.investment.findfriend.domain.feed.domain.Feed;
+import com.investment.findfriend.domain.feed.exception.FeedNotFoundException;
 import com.investment.findfriend.domain.feed.repository.FeedRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class GetImageService {
 
     public ResponseEntity<Resource> execute(Long feedId, HttpServletRequest httpServletRequest) throws IOException {
         Feed feed = feedRepository.findById(feedId).orElseThrow(
-//                () -> FeedNotFoundException
+                () -> FeedNotFoundException.EXCEPTION
         );
         Path path = Paths.get(feed.getUrl());
         Resource resource = new UrlResource(path.toUri());

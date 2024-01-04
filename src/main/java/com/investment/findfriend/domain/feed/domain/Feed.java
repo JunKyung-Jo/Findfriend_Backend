@@ -1,7 +1,6 @@
 package com.investment.findfriend.domain.feed.domain;
 
 import com.investment.findfriend.domain.friend.domain.Friend;
-import com.investment.findfriend.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,8 +23,7 @@ public class Feed {
     private String url;
 
     @Column
-    @ManyToMany
-    private List<User> tags;
+    private List<String> tags;
 
     @ManyToOne
     private Friend friend;
