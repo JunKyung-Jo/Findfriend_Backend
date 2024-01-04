@@ -12,4 +12,5 @@ public class UserResponse {
     private String name;
     private String statusMessage;
     private List<FriendResponse> friends;
+    private String url;
 }

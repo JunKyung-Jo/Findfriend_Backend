@@ -33,6 +33,7 @@ public class GetUserInfoService {
                                 .name(friend.getName())
                                 .statusMessage(friend.getStatusMessage())
                                 .authority(friend.getAuthority())
+                                .url(user.getUrl())
                                 .build())
                         .toList())
                 .build());
