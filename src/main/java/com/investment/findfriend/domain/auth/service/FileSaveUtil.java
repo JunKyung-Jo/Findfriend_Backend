@@ -18,10 +18,13 @@ public class FileSaveUtil {
     public String save(MultipartFile file) {
         try {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            System.out.println(fileName);
             Path path = rootPath.resolve(
                     Paths.get(fileName)
                             .normalize());
+            System.out.println(path);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("success");
             return String.format("%s/%s", rootPath, fileName);
         } catch (IOException e) {
             throw FileException.EXCEPTION;
