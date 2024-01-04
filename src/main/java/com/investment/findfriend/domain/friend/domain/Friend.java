@@ -34,6 +34,9 @@ public class Friend {
     @ElementCollection
     private List<Personality> personalities;
 
+    @Column
+    private String url;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
