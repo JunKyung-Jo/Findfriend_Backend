@@ -1,5 +1,6 @@
 package com.investment.findfriend.domain.likes.presentation;
 
+import com.investment.findfriend.domain.likes.presentation.dto.response.LikesResponse;
 import com.investment.findfriend.domain.likes.service.CheckLikedService;
 import com.investment.findfriend.domain.likes.service.DeleteLikeService;
 import com.investment.findfriend.domain.likes.service.FeedLikeService;
@@ -23,7 +24,7 @@ public class LikeController {
     }
 
     @GetMapping
-    public ResponseEntity<Boolean> isLiked(@RequestParam Long feedId, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<LikesResponse> isLiked(@RequestParam Long feedId, HttpServletRequest httpServletRequest) {
         return checkLikedService.execute(feedId, httpServletRequest);
     }
 
