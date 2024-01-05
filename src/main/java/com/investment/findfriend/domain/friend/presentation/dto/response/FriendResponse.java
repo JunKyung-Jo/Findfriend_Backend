@@ -11,5 +11,5 @@ public class FriendResponse {
     private String name;
     private String statusMessage;
     private Authority authority;
-    private String path;
+    private String url;
 }

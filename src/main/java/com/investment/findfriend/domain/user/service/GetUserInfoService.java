@@ -6,6 +6,7 @@ import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.presentation.dto.response.UserResponse;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.jwt.util.JwtUtil;
+import com.investment.findfriend.global.properties.ServerProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class GetUserInfoService {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final ServerProperties serverProperties;
 
     @Transactional
     public ResponseEntity<UserResponse> execute(HttpServletRequest httpServletRequest) {
@@ -33,7 +35,7 @@ public class GetUserInfoService {
                                 .name(friend.getName())
                                 .statusMessage(friend.getStatusMessage())
                                 .authority(friend.getAuthority())
-                                .path(user.getFile().getPath())
+                                .url(serverProperties.getPath() + "/file?fileId=" + user.getFile().getId())
                                 .build())
                         .toList())
                 .build());

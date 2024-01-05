@@ -8,6 +8,7 @@ import com.investment.findfriend.domain.friend.repository.FriendRepository;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.repository.UserRepository;
 import com.investment.findfriend.global.jwt.util.JwtUtil;
+import com.investment.findfriend.global.properties.ServerProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class GetFriendListService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final ServerProperties serverProperties;
 
     public ResponseEntity<List<FriendResponse>> execute(HttpServletRequest httpServletRequest) {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
@@ -40,7 +42,7 @@ public class GetFriendListService {
                         .authority(friend.getAuthority())
                         .statusMessage(friend.getStatusMessage())
                         .name(friend.getName())
-                        .path(friend.getFile().getPath())
+                        .url(serverProperties.getPath() + "/file?fileId=" + friend.getFile().getId())
                         .build())
                 .toList());
     }
