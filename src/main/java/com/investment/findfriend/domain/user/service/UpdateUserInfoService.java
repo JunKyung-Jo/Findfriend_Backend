@@ -28,10 +28,12 @@ public class UpdateUserInfoService {
                 () -> UserNotFoundException.EXCEPTION
         );
         user.update(request);
-        File userFile = user.getFile();
-        userFile.setPath(fileSaveUtil.save(file));
-        fileRepository.save(userFile);
-        userRepository.save(user);
+        if (!file.isEmpty()) {
+            File userFile = user.getFile();
+            userFile.setPath(fileSaveUtil.save(file));
+            fileRepository.save(userFile);
+            userRepository.save(user);
+        }
         return ResponseEntity.ok("success");
     }
 }
