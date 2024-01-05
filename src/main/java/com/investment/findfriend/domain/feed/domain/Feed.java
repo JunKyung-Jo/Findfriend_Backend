@@ -20,8 +20,9 @@ public class Feed {
     @Column
     private String content;
 
-    @Column
     @ElementCollection
+    @CollectionTable(name = "feed_tags", joinColumns = @JoinColumn(name = "feed_id"))
+    @Column
     private List<String> tags;
 
     @ManyToOne
