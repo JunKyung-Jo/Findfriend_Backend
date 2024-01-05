@@ -20,7 +20,7 @@ public class Feed {
     @Column
     private String content;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "feed_tags", joinColumns = @JoinColumn(name = "feed_id"))
     @Column
     private List<String> tags;
