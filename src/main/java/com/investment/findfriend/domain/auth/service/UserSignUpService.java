@@ -84,6 +84,7 @@ public class UserSignUpService {
                         .birthdate(LocalDate.parse(naverUserInfoResponse.getBirthyear() + "-" + naverUserInfoResponse.getBirthday()))
                         .phone(naverUserInfoResponse.getMobile())
                         .statusMessage("상태 메시지")
+                                .file(File.builder().build())
                         .build());
             }
             return saveRefreshTokenService.execute(naverUserInfoResponse.getEmail());
