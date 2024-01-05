@@ -29,7 +29,7 @@ public class GetFeedListService {
         return ResponseEntity.ok(feedRepository.findAllByFriend(friend).stream()
                 .map(feed -> FeedListResponse.builder()
                         .id(feed.getId())
-                        .url(serverProperties.getPath() + "/file?fileId=" + feed.getFile().getId())
+                        .url(serverProperties.getUrl() + "/file?fileId=" + feed.getFile().getId())
                         .build()).toList());
     }
 }

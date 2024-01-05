@@ -35,7 +35,7 @@ public class GetUserInfoService {
                                 .name(friend.getName())
                                 .statusMessage(friend.getStatusMessage())
                                 .authority(friend.getAuthority())
-                                .url(serverProperties.getPath() + "/file?fileId=" + user.getFile().getId())
+                                .url(serverProperties.getUrl() + "/file?fileId=" + user.getFile().getId())
                                 .build())
                         .toList())
                 .build());

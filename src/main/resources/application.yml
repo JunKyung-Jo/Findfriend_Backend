@@ -17,6 +17,7 @@ spring:
 
 server:
   url: ${SERVER_URL}
+  path: ${ROOT_PATH}
   servlet:
     context-path: /api
 
@@ -38,6 +39,3 @@ openai:
   apiKey: ${OPENAI_API_KEY}
   model: ${OPENAI_MODEL}
   temperature: ${OPENAI_TEMPERATURE}
-
-root:
-  path: ${ROOT_PATH}
