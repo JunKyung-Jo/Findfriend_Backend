@@ -17,7 +17,7 @@ public class FileController {
     private final GetFileService getFileService;
 
     @GetMapping
-    public ResponseEntity<Resource> getImage(@RequestParam Long fileId, HttpServletRequest httpServletRequest) throws IOException {
+    public ResponseEntity<Resource> getFile(@RequestParam Long fileId, HttpServletRequest httpServletRequest) throws IOException {
         return getFileService.execute(fileId, httpServletRequest);
     }
 }
