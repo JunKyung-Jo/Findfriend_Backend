@@ -3,6 +3,7 @@ package com.investment.findfriend.domain.auth.service;
 import com.investment.findfriend.domain.auth.domain.Auth;
 import com.investment.findfriend.domain.auth.presentation.dto.response.TokenResponse;
 import com.investment.findfriend.domain.file.domain.File;
+import com.investment.findfriend.domain.file.repository.FileRepository;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.domain.type.Authority;
 import com.investment.findfriend.domain.user.domain.type.Gender;
@@ -36,6 +37,7 @@ public class UserSignUpService {
     private final GoogleAuthProperties googleAuthProperties;
     private final NaverAuthProperties naverAuthProperties;
     private final SaveRefreshTokenService saveRefreshTokenService;
+    private final FileRepository fileRepository;
     public ResponseEntity<TokenResponse> execute(String code, Auth auth) {
         if (auth == Auth.GOOGLE) {
             GoogleTokenResponse googleTokenResponse = googleGetTokenClient.execute(
@@ -57,7 +59,7 @@ public class UserSignUpService {
                         .authority(Authority.ROLE_USER)
                         .email(googleUserInfoResponse.getEmail())
                         .statusMessage("상태 메시지")
-                                .file(File.builder().build())
+                                .file(fileRepository.save(File.builder().build()))
                         .build());
             }
 
@@ -73,7 +75,6 @@ public class UserSignUpService {
             NaverUserInfoResponse naverUserInfoResponse = naverGetUserInfoClient.execute(
                     naverTokenResponse.getToken_type() + " " + naverTokenResponse.getAccess_token()
             ).getResponse();
-
             if (userRepository.findByEmail(naverUserInfoResponse.getEmail()).isEmpty()) {
                 userRepository.save(
                         User.builder()
@@ -84,7 +85,7 @@ public class UserSignUpService {
                         .birthdate(LocalDate.parse(naverUserInfoResponse.getBirthyear() + "-" + naverUserInfoResponse.getBirthday()))
                         .phone(naverUserInfoResponse.getMobile())
                         .statusMessage("상태 메시지")
-                                .file(File.builder().build())
+                                .file(fileRepository.save(File.builder().build()))
                         .build());
             }
             return saveRefreshTokenService.execute(naverUserInfoResponse.getEmail());
