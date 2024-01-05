@@ -21,9 +21,6 @@ public class Feed {
     private String content;
 
     @Column
-    private String url;
-
-    @Column
     @ElementCollection
     private List<String> tags;
 

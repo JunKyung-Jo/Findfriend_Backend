@@ -6,6 +6,8 @@ import com.investment.findfriend.domain.feed.exception.FileNotFoundException;
 import com.investment.findfriend.domain.feed.exception.UnAuthorizedException;
 import com.investment.findfriend.domain.feed.presentation.dto.request.PostFeedRequest;
 import com.investment.findfriend.domain.feed.repository.FeedRepository;
+import com.investment.findfriend.domain.file.domain.File;
+import com.investment.findfriend.domain.file.repository.FileRepository;
 import com.investment.findfriend.domain.friend.exception.FriendNotFoundException;
 import com.investment.findfriend.domain.friend.repository.FriendRepository;
 import com.investment.findfriend.domain.user.domain.User;
@@ -28,6 +30,7 @@ public class PostFeedService {
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
     private final FeedRepository feedRepository;
+    private final FileRepository fileRepository;
     private final FileSaveUtil fileSaveUtil;
 
     public ResponseEntity<String> execute(PostFeedRequest request, MultipartFile file, HttpServletRequest httpServletRequest) {
@@ -39,14 +42,16 @@ public class PostFeedService {
             throw UnAuthorizedException.EXCEPTION;
         }
 
-        String url = fileSaveUtil.save(file);
+        String path = fileSaveUtil.save(file);
 
         feedRepository.save(Feed.builder()
                 .content(request.getContent())
                 .friend(friendRepository.findById(request.getFriendId()).orElseThrow(
                         () -> FriendNotFoundException.EXCEPTION
                 ))
-                .url(url)
+                .file(fileRepository.save(File.builder()
+                        .path(path)
+                        .build()))
                 .tags(request.getTags())
                 .build());
         return ResponseEntity.ok("success");
