@@ -26,7 +26,7 @@ public class GetFileService {
                 () -> FileNotFoundException.EXCEPTION
         );
         Path path = Paths.get(file.getPath());
-        Resource resource = new UrlResource(path.toUri());
+        Resource resource = new UrlResource(path.toUri().toString().replace("///", "//"));
         String contentType = httpServletRequest.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
