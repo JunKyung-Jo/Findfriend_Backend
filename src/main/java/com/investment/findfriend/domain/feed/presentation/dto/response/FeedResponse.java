@@ -11,4 +11,5 @@ public class FeedResponse {
     private String name;
     private String content;
     private List<String> tags;
+    private String url;
 }
