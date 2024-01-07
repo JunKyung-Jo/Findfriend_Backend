@@ -1,7 +1,6 @@
 package com.investment.findfriend.domain.user.service;
 
 import com.investment.findfriend.domain.auth.exception.UserNotFoundException;
-import com.investment.findfriend.domain.friend.presentation.dto.response.FriendResponse;
 import com.investment.findfriend.domain.user.domain.User;
 import com.investment.findfriend.domain.user.presentation.dto.response.UserResponse;
 import com.investment.findfriend.domain.user.repository.UserRepository;
@@ -30,15 +29,7 @@ public class GetUserInfoService {
                 .name(user.getName())
                 .statusMessage(user.getStatusMessage())
                 .url(serverProperties.getUrl() + "/file?fileId=" + user.getFile().getId())
-                .friends(user.getFriends().stream()
-                        .map(friend -> FriendResponse.builder()
-                                .id(friend.getId())
-                                .name(friend.getName())
-                                .statusMessage(friend.getStatusMessage())
-                                .authority(friend.getAuthority())
-                                .url(serverProperties.getUrl() + "/file?fileId=" + friend.getFile().getId())
-                                .build())
-                        .toList())
+                .authority(user.getAuthority())
                 .build());
     }
 }

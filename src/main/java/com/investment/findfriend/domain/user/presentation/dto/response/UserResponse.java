@@ -1,16 +1,14 @@
 package com.investment.findfriend.domain.user.presentation.dto.response;
 
-import com.investment.findfriend.domain.friend.presentation.dto.response.FriendResponse;
+import com.investment.findfriend.domain.user.domain.type.Authority;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 @Builder
 public class UserResponse {
     private String name;
     private String statusMessage;
-    private List<FriendResponse> friends;
+    private Authority authority;
     private String url;
 }
