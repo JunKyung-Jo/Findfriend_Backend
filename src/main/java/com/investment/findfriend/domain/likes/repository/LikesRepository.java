@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface LikesRepository extends JpaRepository<Likes, Long> {
     Boolean existsByUserAndFeed(User user, Feed feed);
 
-    void deleteByIdAndUser(Long feedId, User user);
+    void deleteByFeedIdAndUserId(Long feedId, Long userId);
 
     Long countByFeedId(Long feedId);
 }

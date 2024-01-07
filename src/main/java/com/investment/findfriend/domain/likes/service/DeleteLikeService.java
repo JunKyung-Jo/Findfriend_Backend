@@ -24,7 +24,7 @@ public class DeleteLikeService {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
-        likesRepository.deleteByIdAndUser(feedId, user);
+        likesRepository.deleteByFeedIdAndUserId(feedId, user.getId());
         return ResponseEntity.ok("success");
     }
 }
