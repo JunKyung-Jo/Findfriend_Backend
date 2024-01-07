@@ -19,6 +19,7 @@ public class GetFeedService {
                 () -> FeedNotFoundException.EXCEPTION
         );
         return ResponseEntity.ok(FeedResponse.builder()
+                .name(feed.getFriend().getName())
                 .content(feed.getContent())
                 .tags(feed.getTags())
                 .build()
