@@ -34,7 +34,7 @@ public class FeedController {
     }
 
     @GetMapping
-    public ResponseEntity<FeedResponse> getFeeds(@RequestParam Long feedId) {
+    public ResponseEntity<FeedResponse> getFeed(@RequestParam Long feedId) {
         return getFeedService.execute(feedId);
     }
 
