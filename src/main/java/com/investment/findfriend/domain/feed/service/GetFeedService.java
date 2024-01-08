@@ -24,7 +24,7 @@ public class GetFeedService {
                 .name(feed.getFriend().getName())
                 .content(feed.getContent())
                 .tags(feed.getTags())
-                .url(serverProperties.getUrl() + "/file?fileId=" + feed.getFriend().getFile().getId())
+                .url(feed.getFriend().getFile() != null ? serverProperties.getUrl() + "/file?fileId=" + feed.getFriend().getFile().getId() : null)
                 .build()
         );
     }

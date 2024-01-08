@@ -22,6 +22,7 @@ public class FriendController {
     private final GetFriendListService getFriendListService;
     private final UpdateAuthorityService updateAuthorityService;
     private final GetFreeFriendListService getFreeFriendListService;
+    private final DeleteFriendService deleteFriendService;
 
 
     @PostMapping(value = "/meet", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -42,6 +43,11 @@ public class FriendController {
     @GetMapping
     public ResponseEntity<List<FriendResponse>> getFreeFriendList() {
         return getFreeFriendListService.execute();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> leftFriend(@RequestParam Long friendId) {
+        return deleteFriendService.execute(friendId);
     }
 
 }
