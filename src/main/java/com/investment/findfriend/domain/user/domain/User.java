@@ -55,6 +55,7 @@ public class User {
     private List<Feed> feed;
 
     @OneToOne
+    @Setter
     private File file;
 
     public void update(UpdateUserInfoRequest request) {

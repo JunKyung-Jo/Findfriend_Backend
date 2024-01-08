@@ -27,13 +27,23 @@ public class UpdateUserInfoService {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
+
         user.update(request);
+
         if (!file.isEmpty()) {
             File userFile = user.getFile();
-            userFile.setPath(fileSaveUtil.save(file));
-            fileRepository.save(userFile);
+
+            if (userFile == null) {
+                user.setFile(File.builder().build());
+            }
+
+            user.getFile().setPath(fileSaveUtil.save(file));
+            fileRepository.save(user.getFile());
         }
+
         userRepository.save(user);
         return ResponseEntity.ok("success");
     }
+
+
 }
