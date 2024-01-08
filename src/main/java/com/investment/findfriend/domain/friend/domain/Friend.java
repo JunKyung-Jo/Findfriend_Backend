@@ -45,7 +45,7 @@ public class Friend {
     @OneToMany(mappedBy = "friend")
     private List<Feed> feed;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private File file;
 
 }
