@@ -42,8 +42,9 @@ public class GetFriendListService {
                         .authority(friend.getAuthority())
                         .statusMessage(friend.getStatusMessage())
                         .name(friend.getName())
-                        .url(serverProperties.getUrl() + "/file?fileId=" + friend.getFile().getId())
+                        .url(friend.getFile() != null ? serverProperties.getUrl() + "/file?fileId=" + friend.getFile().getId() : null)
                         .build())
                 .toList());
+
     }
 }
