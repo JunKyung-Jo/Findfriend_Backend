@@ -2,6 +2,7 @@ package com.investment.findfriend.domain.feed.domain;
 
 import com.investment.findfriend.domain.file.domain.File;
 import com.investment.findfriend.domain.friend.domain.Friend;
+import com.investment.findfriend.domain.likes.domain.Likes;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +31,7 @@ public class Feed {
 
     @OneToOne
     private File file;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Likes> likes;
 }
