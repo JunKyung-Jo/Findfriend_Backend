@@ -33,7 +33,10 @@ public class PostFriendService {
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest))
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        File savedFile = file.isEmpty() ? fileRepository.save(File.builder().path(fileSaveUtil.save(file)).build()) : null;
+        File savedFile = null;
+        if (file != null && !file.isEmpty()) {
+            savedFile = fileRepository.save(File.builder().path(fileSaveUtil.save(file)).build());
+        }
 
         Friend friend = Friend.builder()
                 .user(user)
