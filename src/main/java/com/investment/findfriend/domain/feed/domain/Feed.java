@@ -32,6 +32,6 @@ public class Feed {
     @OneToOne
     private File file;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "feed")
     private List<Likes> likes;
 }
