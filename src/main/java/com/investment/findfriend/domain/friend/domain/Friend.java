@@ -39,10 +39,10 @@ public class Friend {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "friend")
+    @OneToMany(mappedBy = "friend", cascade = CascadeType.ALL)
     private List<Chat> chats;
 
-    @OneToMany(mappedBy = "friend")
+    @OneToMany(mappedBy = "friend", cascade = CascadeType.ALL)
     private List<Feed> feed;
 
     @OneToOne(cascade = CascadeType.ALL)
