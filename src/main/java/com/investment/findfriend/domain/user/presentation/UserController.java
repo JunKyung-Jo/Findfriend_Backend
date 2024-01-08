@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // 유저 정보 업데이트
-    public ResponseEntity<String> updateUserInfo(@RequestPart("data") UpdateUserInfoRequest request, @RequestPart("file") MultipartFile file, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> updateUserInfo(@RequestPart("data") UpdateUserInfoRequest request, @RequestPart(value = "file", required = false) MultipartFile file, HttpServletRequest httpServletRequest) {
         return updateUserInfoService.execute(request, file, httpServletRequest);
     }
 
