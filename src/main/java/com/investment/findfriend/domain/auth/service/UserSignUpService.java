@@ -39,6 +39,7 @@ public class UserSignUpService {
     private final SaveRefreshTokenService saveRefreshTokenService;
     private final FileRepository fileRepository;
     public ResponseEntity<TokenResponse> execute(String code, Auth auth) {
+        // auth enum(열거형)을 통해서 구글 네이버 판단
         if (auth == Auth.GOOGLE) {
             GoogleTokenResponse googleTokenResponse = googleGetTokenClient.execute(
                     GoogleTokenRequest.builder()
@@ -52,7 +53,8 @@ public class UserSignUpService {
                     googleTokenResponse.getAccess_token()
             );
 
-            if (userRepository.findByEmail(googleUserInfoResponse.getEmail()).isEmpty()) {
+            // 가져온 정보를 바탕으로 이미 가입이 되어있는지 확인
+            if (userRepository.findByEmail(googleUserInfoResponse.getEmail()).isEmpty()) { // 가입이 안되어있다면 새 데이터 저장
                 userRepository.save(
                         User.builder()
                         .name(googleUserInfoResponse.getName())
@@ -63,6 +65,7 @@ public class UserSignUpService {
                         .build());
             }
 
+            // 토큰 발급 후 return
             return saveRefreshTokenService.execute(googleUserInfoResponse.getEmail());
         } else if (auth == Auth.NAVER) {
             NaverTokenResponse naverTokenResponse = naverGetTokenClient.execute(
@@ -75,7 +78,8 @@ public class UserSignUpService {
             NaverUserInfoResponse naverUserInfoResponse = naverGetUserInfoClient.execute(
                     naverTokenResponse.getToken_type() + " " + naverTokenResponse.getAccess_token()
             ).getResponse();
-            if (userRepository.findByEmail(naverUserInfoResponse.getEmail()).isEmpty()) {
+            // 가져온 정보를 바탕으로 이미 가입이 되어있는지 확인
+            if (userRepository.findByEmail(naverUserInfoResponse.getEmail()).isEmpty()) { // 가입이 안되어있다면 새 데이터 저장
                 userRepository.save(
                         User.builder()
                         .name(naverUserInfoResponse.getName())
@@ -88,8 +92,10 @@ public class UserSignUpService {
                                 .file(fileRepository.save(File.builder().build()))
                         .build());
             }
+            // 토큰 발급 후 return
             return saveRefreshTokenService.execute(naverUserInfoResponse.getEmail());
         }
+        // 열거형이 올바르지 않다면 토큰을 발급하지 않음
         return null;
     }
 }

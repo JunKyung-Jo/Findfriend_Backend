@@ -30,10 +30,12 @@ public class PostFriendService {
 
     @Transactional
     public ResponseEntity<String> execute(PostFriendRequest request, MultipartFile file, HttpServletRequest httpServletRequest) {
+        // 가입된 유저인지 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest))
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         File savedFile = null;
+        // 친구 이미지가 존재한다면 저장
         if (file != null && !file.isEmpty()) {
             savedFile = fileRepository.save(File.builder().path(fileSaveUtil.save(file)).build());
         }
@@ -47,9 +49,10 @@ public class PostFriendService {
                 .file(savedFile)
                 .build();
 
+        // 친구를 DB에 저장
         friendRepository.save(friend);
-        user.getFriends().add(friend);
 
+        // 성공 여부 return
         return ResponseEntity.ok("success");
     }
 

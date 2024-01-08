@@ -18,6 +18,7 @@ public class GetFreeFriendListService {
     private final ServerProperties serverProperties;
 
     public ResponseEntity<List<FriendResponse>> execute() {
+        // ANNOUNCE 이거나 FREE 인 것들만 모두 와서 List 형태로 바꾼 후 return
         return ResponseEntity.ok(friendRepository.findByAuthorityIn(List.of(Authority.ROLE_ANNOUNCE, Authority.ROLE_FREE)).stream()
                 .map(friend -> FriendResponse.builder()
                         .id(friend.getId())

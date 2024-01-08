@@ -17,9 +17,11 @@ public class GetFeedService {
     private final ServerProperties serverProperties;
 
     public ResponseEntity<FeedResponse> execute(Long feedId) {
+        // 해당하는 id 값에 따라 피드 검색
         Feed feed = feedRepository.findById(feedId).orElseThrow(
                 () -> FeedNotFoundException.EXCEPTION
         );
+        // 상세 내용 return
         return ResponseEntity.ok(FeedResponse.builder()
                 .name(feed.getFriend().getName())
                 .content(feed.getContent())

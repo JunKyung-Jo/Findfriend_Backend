@@ -24,12 +24,15 @@ public class CheckLikedService {
     private final LikesRepository likesRepository;
 
     public ResponseEntity<LikesResponse> execute(Long feedId, HttpServletRequest httpServletRequest) {
+        // 가입된 유저 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
+        // 피드 검색
         Feed feed = feedRepository.findById(feedId).orElseThrow(
                 () -> FeedNotFoundException.EXCEPTION
         );
+        // 컬럼 존재 여부를 통해 좋아요를 눌렀는지 안눌렀는지 확인 하고 feedId를 통해 컬럼 개수를 카운팅 하여 전체 좋아요 개수를 return
         return ResponseEntity.ok(LikesResponse.builder()
                 .isLiked(likesRepository.existsByUserAndFeed(user, feed))
                 .count(likesRepository.countByFeedId(feedId))

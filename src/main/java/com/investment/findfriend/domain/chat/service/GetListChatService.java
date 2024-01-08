@@ -27,17 +27,22 @@ public class GetListChatService {
     private final JwtUtil jwtUtil;
 
     public ResponseEntity<List<ChatResponse>> execute(Long id, HttpServletRequest httpServletRequest) {
+        // 가입된 유저 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
 
+        // 친구 확인
         Friend friend = friendRepository.findById(id).orElseThrow(
                 () -> FriendNotFoundException.EXCEPTION
         );
 
+        // 채팅에 유저와 친구가 같은 것들만 모두 찾기
         List<Chat> chatList = chatRepository.findAllByUserAndFriend(user, friend);
+        // 시간순 정렬
         chatList.sort(Comparator.comparing(Chat::getTimestamp));
 
+        // map 을 통해 List 형태로 return
         return ResponseEntity.ok(
                 chatList.stream()
                         .map(chat -> ChatResponse.builder()

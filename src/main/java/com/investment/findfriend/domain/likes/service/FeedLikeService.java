@@ -27,16 +27,20 @@ public class FeedLikeService {
 
 
     public ResponseEntity<String> execute(Long feedId, HttpServletRequest httpServletRequest) {
+        // 가입된 유저 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
+        // 게시물 찾기
         Feed feed = feedRepository.findById(feedId).orElseThrow(
                 () -> FeedNotFoundException.EXCEPTION
         );
+        // 좋아요 여부를 저장
         likesRepository.save(Likes.builder()
                 .feed(feed)
                 .user(user)
                 .build());
+        // 성공 여부 return
         return ResponseEntity.ok("success");
     }
 }

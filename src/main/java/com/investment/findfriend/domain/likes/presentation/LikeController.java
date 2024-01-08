@@ -18,17 +18,17 @@ public class LikeController {
     private final CheckLikedService checkLikedService;
     private final DeleteLikeService deleteLikeService;
 
-    @PostMapping
+    @PostMapping // 좋아요 누르기
     public ResponseEntity<String> likeFeed(@RequestParam Long feedId, HttpServletRequest httpServletRequest) {
         return feedLikeService.execute(feedId, httpServletRequest);
     }
 
-    @GetMapping
+    @GetMapping // 좋아요를 눌렀는지 확인
     public ResponseEntity<LikesResponse> isLiked(@RequestParam Long feedId, HttpServletRequest httpServletRequest) {
         return checkLikedService.execute(feedId, httpServletRequest);
     }
 
-    @DeleteMapping
+    @DeleteMapping // 좋아요 삭제하기
     public ResponseEntity<String> deleteLike(@RequestParam Long feedId, HttpServletRequest httpServletRequest) {
         return deleteLikeService.execute(feedId, httpServletRequest);
     }

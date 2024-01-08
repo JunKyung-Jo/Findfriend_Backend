@@ -34,16 +34,19 @@ public class PostFeedService {
     private final FileSaveUtil fileSaveUtil;
 
     public ResponseEntity<String> execute(PostFeedRequest request, MultipartFile file, HttpServletRequest httpServletRequest) {
+        // 사진이 있는지 확인
         if (file.isEmpty()) {
             throw FileNotFoundException.EXCEPTION;
         }
         Optional<User> user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest));
+        // 유저 권한이 어드민인지 ? 그리고 가입된 유저인지 확인
         if (user.isEmpty() || user.get().getAuthority() != Authority.ROLE_ADMIN) {
             throw UnAuthorizedException.EXCEPTION;
         }
-
+        // 파일 저장
         String path = fileSaveUtil.save(file);
 
+        // 피드 저장
         feedRepository.save(Feed.builder()
                 .content(request.getContent())
                 .friend(friendRepository.findById(request.getFriendId()).orElseThrow(
@@ -54,6 +57,7 @@ public class PostFeedService {
                         .build()))
                 .tags(request.getTags())
                 .build());
+        // 성공 return
         return ResponseEntity.ok("success");
     }
 }

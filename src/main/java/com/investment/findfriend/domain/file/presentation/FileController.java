@@ -16,7 +16,7 @@ public class FileController {
 
     private final GetFileService getFileService;
 
-    @GetMapping
+    @GetMapping // 파일 꺼내기
     public ResponseEntity<Resource> getFile(@RequestParam Long fileId, HttpServletRequest httpServletRequest) throws IOException {
         return getFileService.execute(fileId, httpServletRequest);
     }

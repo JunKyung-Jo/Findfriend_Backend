@@ -34,10 +34,12 @@ public class PostChatService {
     private final ChatGPTProperties chatGPTProperties;
 
     public ResponseEntity<GenerateChatResponse> execute(ChatRequest request, HttpServletRequest httpServletRequest) {
+        // 가입된 유저인지 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
 
+        // ChatGPT API 를 통해 응답 가져오기
         ChatGPTResponse response = chatGPTClient.getChatGPTResponse(ChatGPTRequest.builder()
                 .model(chatGPTProperties.getModel())
                 .temperature(chatGPTProperties.getTemperature())
@@ -47,6 +49,7 @@ public class PostChatService {
                         .build()))
                 .build(), "Bearer " + chatGPTProperties.getApiKey());
 
+        // 질문과 응답을 유저로 묶어 저장
         chatRepository.save(
                 Chat.builder()
                         .user(user)
@@ -59,6 +62,7 @@ public class PostChatService {
                         .build()
         );
 
+        // 응답 return
         return ResponseEntity.ok(GenerateChatResponse.builder()
                 .response(response.getChoices().get(0).getMessage().getContent())
                 .build());

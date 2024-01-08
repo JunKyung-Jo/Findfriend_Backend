@@ -17,12 +17,12 @@ public class AuthController {
     private final UserSignUpService userSignUpService;
     private final RefreshTokenService refreshTokenService;
 
-    @PostMapping("/signup")
+    @PostMapping("/signup") // OAuth 로그인 (NAVER, GOOGLE) API
     public ResponseEntity<TokenResponse> signUp(@RequestParam("code") String code, @RequestParam("auth")Auth auth) {
         return userSignUpService.execute(code, auth);
     }
 
-    @PutMapping("/refresh")
+    @PutMapping("/refresh") // RefreshToken을 통해 AccessToken을 재발급 하는 API
     public ResponseEntity<TokenResponse> refresh(HttpServletRequest request) {
         return refreshTokenService.execute(request);
     }

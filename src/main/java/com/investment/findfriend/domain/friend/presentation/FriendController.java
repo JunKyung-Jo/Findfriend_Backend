@@ -25,27 +25,27 @@ public class FriendController {
     private final DeleteFriendService deleteFriendService;
 
 
-    @PostMapping(value = "/meet", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/meet", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // 친구 만나기
     public ResponseEntity<String> meetFriend(@RequestPart("data") PostFriendRequest request, @RequestPart(value = "file", required = false) MultipartFile file, HttpServletRequest httpServletRequest) {
         return postFriendService.execute(request, file, httpServletRequest);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list") // 친구 리스트 가져오기
     public ResponseEntity<List<FriendResponse>> getFriendList(HttpServletRequest httpServletRequest) {
         return getFriendListService.execute(httpServletRequest);
     }
 
-    @PutMapping("/authority")
+    @PutMapping("/authority") // 봇 권한 바꾸기
     public ResponseEntity<String> setAuthority(@RequestBody UpdateAuthorityRequest request, HttpServletRequest httpServletRequest) {
         return updateAuthorityService.execute(request, httpServletRequest);
     }
 
-    @GetMapping
+    @GetMapping // 무료 친구 리스트 가져오기
     public ResponseEntity<List<FriendResponse>> getFreeFriendList() {
         return getFreeFriendListService.execute();
     }
 
-    @DeleteMapping
+    @DeleteMapping // 친구 떠나기
     public ResponseEntity<String> leftFriend(@RequestParam Long friendId) {
         return deleteFriendService.execute(friendId);
     }

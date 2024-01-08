@@ -22,17 +22,17 @@ public class ChatController {
     private final GetListChatService getListChatService;
     private final FreeChatService freeChatService;
 
-    @PostMapping
+    @PostMapping // 채팅하기 ( 대화 내용 저장 )
     public ResponseEntity<GenerateChatResponse> chat(@RequestBody ChatRequest request, HttpServletRequest httpServletRequest) {
         return postChatService.execute(request, httpServletRequest);
     }
 
-    @GetMapping
+    @GetMapping // 채팅 내용 가져오기
     public ResponseEntity<List<ChatResponse>> getListChat(@RequestParam Long id, HttpServletRequest httpServletRequest) {
         return getListChatService.execute(id, httpServletRequest);
     }
 
-    @PostMapping("/free")
+    @PostMapping("/free") // 무료로 대화만 받기
     public ResponseEntity<GenerateChatResponse> freeChat(@RequestBody ChatRequest request) {
         return freeChatService.execute(request);
     }

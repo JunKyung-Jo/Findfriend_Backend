@@ -19,12 +19,12 @@ public class UserController {
     private final GetUserInfoService getUserInfoService;
     private final UpdateUserInfoService updateUserInfoService;
 
-    @GetMapping("/get")
+    @GetMapping("/get") // 유저 정보 가져오기
     public ResponseEntity<UserResponse> getUserInfo(HttpServletRequest httpServletRequest) {
         return getUserInfoService.execute(httpServletRequest);
     }
 
-    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // 유저 정보 업데이트
     public ResponseEntity<String> updateUserInfo(@RequestPart("data") UpdateUserInfoRequest request, @RequestPart("file") MultipartFile file, HttpServletRequest httpServletRequest) {
         return updateUserInfoService.execute(request, file, httpServletRequest);
     }

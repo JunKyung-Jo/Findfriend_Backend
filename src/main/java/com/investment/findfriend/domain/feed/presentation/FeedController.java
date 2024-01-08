@@ -24,17 +24,17 @@ public class FeedController {
     private final GetFeedListService getFeedListService;
     private final GetFeedService getFeedService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // 피드 생성하기
     public ResponseEntity<String> postFeed(@RequestPart("data") PostFeedRequest request, @RequestPart("file") MultipartFile file,  HttpServletRequest httpServletRequest) {
         return postPostService.execute(request, file, httpServletRequest);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list") // 피드 리스트 가져오기
     public ResponseEntity<List<FeedListResponse>> getAllFeeds(@RequestParam Long friendId) {
         return getFeedListService.execute(friendId);
     }
 
-    @GetMapping
+    @GetMapping // 피드 상세보기
     public ResponseEntity<FeedResponse> getFeed(@RequestParam Long feedId) {
         return getFeedService.execute(feedId);
     }

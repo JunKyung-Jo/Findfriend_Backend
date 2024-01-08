@@ -22,9 +22,11 @@ public class GetUserInfoService {
 
     @Transactional
     public ResponseEntity<UserResponse> execute(HttpServletRequest httpServletRequest) {
+        // 유저 존재 여부 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
+        // 상세 정보 return
         return ResponseEntity.ok(UserResponse.builder()
                 .name(user.getName())
                 .statusMessage(user.getStatusMessage())

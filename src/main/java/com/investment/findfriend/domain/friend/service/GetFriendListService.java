@@ -26,16 +26,19 @@ public class GetFriendListService {
     private final ServerProperties serverProperties;
 
     public ResponseEntity<List<FriendResponse>> execute(HttpServletRequest httpServletRequest) {
+        // 가입된 유저인지 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
 
+        // 공지, 무료, 또는 본인이 만든 커스텀 봇들만 모두 가져오기
         List<Friend> friendList = friendRepository.findByAuthorityInAndUserOrAuthorityIn(
                 List.of(Authority.ROLE_CUSTOM),
                 user,
                 List.of(Authority.ROLE_ANNOUNCE, Authority.ROLE_FREE)
         );
 
+        // map 을 통해 List 로 return
         return ResponseEntity.ok(friendList.stream()
                 .map(friend -> FriendResponse.builder()
                         .id(friend.getId())

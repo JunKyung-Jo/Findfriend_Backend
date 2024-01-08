@@ -21,10 +21,13 @@ public class DeleteLikeService {
     private final JwtUtil jwtUtil;
 
     public ResponseEntity<String> execute(Long feedId, HttpServletRequest httpServletRequest) {
+        // 가입된 유저인지 확인
         User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
                 () -> UserNotFoundException.EXCEPTION
         );
+        // 좋아요 삭제
         likesRepository.deleteByFeedIdAndUserId(feedId, user.getId());
+        // 성공
         return ResponseEntity.ok("success");
     }
 }

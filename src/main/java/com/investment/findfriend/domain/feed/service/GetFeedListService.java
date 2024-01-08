@@ -23,9 +23,11 @@ public class GetFeedListService {
 
     @Transactional
     public ResponseEntity<List<FeedListResponse>> execute(Long friendId) {
+        // 친구 존재하는지 확인
         Friend friend = friendRepository.findById(friendId).orElseThrow(
                 () -> FriendNotFoundException.EXCEPTION
         );
+        // 그 친구에 해당하는 값만 return
         return ResponseEntity.ok(feedRepository.findAllByFriend(friend).stream()
                 .map(feed -> FeedListResponse.builder()
                         .id(feed.getId())

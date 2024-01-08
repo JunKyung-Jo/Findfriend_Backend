@@ -21,6 +21,7 @@ public class FreeChatService {
     private final ChatGPTProperties chatGPTProperties;
 
     public ResponseEntity<GenerateChatResponse> execute(ChatRequest request) {
+        // 응답 생성
         ChatGPTResponse response = chatGPTClient.getChatGPTResponse(ChatGPTRequest.builder()
                 .model(chatGPTProperties.getModel())
                 .temperature(chatGPTProperties.getTemperature())
@@ -29,6 +30,7 @@ public class FreeChatService {
                         .content(request.getText())
                         .build()))
                 .build(), "Bearer " + chatGPTProperties.getApiKey());
+        // 응답 값 return
         return ResponseEntity.ok(GenerateChatResponse.builder()
                 .response(response.getChoices().get(0).getMessage().getContent())
                 .build());
