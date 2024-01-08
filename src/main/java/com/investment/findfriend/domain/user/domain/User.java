@@ -45,7 +45,7 @@ public class User {
     @Column
     private String statusMessage;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Friend> friends;
 
     @OneToMany(mappedBy = "user")
