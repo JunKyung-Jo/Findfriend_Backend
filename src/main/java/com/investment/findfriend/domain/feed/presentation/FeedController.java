@@ -8,6 +8,7 @@ import com.investment.findfriend.domain.feed.service.GetFeedService;
 import com.investment.findfriend.domain.feed.service.PostFeedService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +24,7 @@ public class FeedController {
     private final GetFeedListService getFeedListService;
     private final GetFeedService getFeedService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> postFeed(@RequestPart("data") PostFeedRequest request, @RequestPart("file") MultipartFile file,  HttpServletRequest httpServletRequest) {
         return postPostService.execute(request, file, httpServletRequest);
     }

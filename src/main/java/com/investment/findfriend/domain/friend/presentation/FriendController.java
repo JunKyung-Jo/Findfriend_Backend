@@ -6,6 +6,7 @@ import com.investment.findfriend.domain.friend.presentation.dto.response.FriendR
 import com.investment.findfriend.domain.friend.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +24,8 @@ public class FriendController {
     private final GetFreeFriendListService getFreeFriendListService;
 
 
-    @PostMapping("/meet")
-    public ResponseEntity<String> meetFriend(@RequestPart("data") PostFriendRequest request, @RequestPart("file") MultipartFile file, HttpServletRequest httpServletRequest) {
+    @PostMapping(value = "/meet", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> meetFriend(@RequestPart("data") PostFriendRequest request, @RequestPart(value = "file", required = false) MultipartFile file, HttpServletRequest httpServletRequest) {
         return postFriendService.execute(request, file, httpServletRequest);
     }
 

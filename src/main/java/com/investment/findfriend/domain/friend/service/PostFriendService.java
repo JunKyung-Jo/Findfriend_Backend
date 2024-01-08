@@ -30,9 +30,10 @@ public class PostFriendService {
 
     @Transactional
     public ResponseEntity<String> execute(PostFriendRequest request, MultipartFile file, HttpServletRequest httpServletRequest) {
-        User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest)).orElseThrow(
-                () -> UserNotFoundException.EXCEPTION
-        );
+        User user = userRepository.findByEmail(jwtUtil.extractEmail(httpServletRequest))
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        File savedFile = file.isEmpty() ? fileRepository.save(File.builder().path(fileSaveUtil.save(file)).build()) : null;
 
         Friend friend = Friend.builder()
                 .user(user)
@@ -40,14 +41,13 @@ public class PostFriendService {
                 .authority(Authority.ROLE_CUSTOM)
                 .name(request.getName())
                 .personalities(request.getPersonalities())
-                .file(fileRepository.save(
-                        File.builder()
-                        .path(fileSaveUtil.save(file))
-                                .build()))
+                .file(savedFile)
                 .build();
 
         friendRepository.save(friend);
         user.getFriends().add(friend);
+
         return ResponseEntity.ok("success");
     }
+
 }
