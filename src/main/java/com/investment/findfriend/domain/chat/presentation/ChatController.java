@@ -32,7 +32,7 @@ public class ChatController {
         return getListChatService.execute(id, httpServletRequest);
     }
 
-    @GetMapping("/free")
+    @PostMapping("/free")
     public ResponseEntity<GenerateChatResponse> freeChat(@RequestBody ChatRequest request) {
         return freeChatService.execute(request);
     }
