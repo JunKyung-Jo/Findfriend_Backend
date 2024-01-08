@@ -14,5 +14,5 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
 
     Long countByFeedId(Long feedId);
 
-    void deleteByFeedId(Long id);
+    void deleteAllByFeedId(Long id);
 }

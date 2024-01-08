@@ -25,7 +25,7 @@ public class DeleteFriendService {
         );
         // 피드 내용 삭제
         friend.getFeed().stream().map(feed -> {
-            likesRepository.deleteByFeedId(feed.getId());
+            likesRepository.deleteAllByFeedId(feed.getId());
             feedRepository.deleteById(feed.getId());
             return null;
         });
